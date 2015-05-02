@@ -2,6 +2,9 @@
 require_once 'Application.php';
 require_once 'includes/config.php';
 
+define('DX_ROOT_DIR', dirname(__FILE__) . '/');
+define('DX_ROOT_PATH', basename(dirname(__FILE__)) . '/');
+
 session_start();
 $app = Application::getInstance();
 $app->start();

@@ -4,7 +4,6 @@ class Application {
     private static $instance = null;
     
     private function __construct() {
-        
     }
     
     public function start() {

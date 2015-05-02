@@ -1,6 +1,4 @@
 <?php
-define('DX_ROOT_DIR', dirname(__FILE__) . '/');
-define('DX_ROOT_PATH', basename(dirname(__FILE__)) . '/');
 
 class FrontController {
     
