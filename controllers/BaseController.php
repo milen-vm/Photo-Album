@@ -8,7 +8,7 @@ abstract class BaseController {
     
     public function __construct($controller_name) {
         $this->controller_name = $controller_name;
-        $this->title = $controller_name;
+        $this->title = ucfirst($controller_name);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->$is_post = true;
         }
