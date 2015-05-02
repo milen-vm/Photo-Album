@@ -38,4 +38,23 @@ abstract class BaseController {
         $this->is_view_rendered = true;
     }
     
+    public function redirectToUrl($url) {
+        header('Location: ' . $url);
+        die;
+    }
+    
+    public function redirect($controller_Name, $action_name = null, $params = null) {
+        $url = urlencode($controller_Name);
+        if ($action_name != null) {
+            $url .= '/' . urlencode($action_name);
+        }
+        
+        if ($params != null) {
+            $encoded_params = array_map('urlencode', $params);
+            $url .= '/' . implode('/', $encoded_params);
+        }
+
+        $this->redirectToUrl($url);
+    }
+    
 }
