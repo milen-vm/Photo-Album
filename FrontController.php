@@ -12,9 +12,10 @@ class FrontController {
         $action_name = DEFAULT_ACTION;
         $params = array();
         $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $request_home = '/' . DX_ROOT_PATH;
         
-        if (strpos($request, '/' . DX_ROOT_PATH) === 0) {
-            $request = substr($request, strlen('/' . DX_ROOT_PATH));
+        if (strpos($request, $request_home) === 0) {
+            $request = substr($request, strlen($request_home));
         }
         
         if ($request) {
