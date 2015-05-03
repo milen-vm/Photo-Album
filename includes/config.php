@@ -5,7 +5,10 @@ define('DEFAULT_LAYOUT', 'default');
 
 define('SERVER_NAME', 'localhost');
 define('USER_NAME', 'root');
-define('SERVER_PASSWORD', '');
+define('SERVER_PASSWORD', 'my3595936sql');
 define('DATABASE_NAME', 'photo_album');
 
 define('USER_NAME_MIN_LENGTH', 3);
+define('FIRST_LAST_NAME_MIN_LENGTH', 2);
+define('MIN_BIRTH_YEAR', 1920);
+define('PASSWORD_MIN_LENGTH', 3);

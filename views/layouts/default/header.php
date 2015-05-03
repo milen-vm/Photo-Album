@@ -36,7 +36,7 @@
                             <a href="/Photo-Album/home/index">Home</a>
                         </li>
                         <li>
-                            <a href="/Photo-Album/accounts/register">Register</a>
+                            <a href="/Photo-Album/account/register">Register</a>
                         </li>
                         <li>
                             <a href="#">Login</a>

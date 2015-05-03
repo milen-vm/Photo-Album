@@ -10,7 +10,7 @@ abstract class BaseController {
         $this->controller_name = $controller_name;
         $this->title = ucfirst($controller_name);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->$is_post = true;
+            $this->is_post = true;
         }
     }
     

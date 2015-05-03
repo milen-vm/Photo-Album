@@ -16,6 +16,7 @@ class FrontController {
             $request = substr($request, strlen($request_home));
         }
         
+        $request_components = array();
         if ($request) {
             $request_components = explode('/', $request);
             $request_components = array_values(
@@ -23,33 +24,33 @@ class FrontController {
                     return $val != '';
                 }
             ));
-            
-            if (isset($request_components[0])) {
+        }
+        
+        if (isset($request_components[0])) {
                 $controller_name = $request_components[0];
             }
             
-            if (isset($request_components[1])) {
-                $action_name = $request_components[1];
-            }
-            
-            if (isset($request_components[2])) {
-                $params = array_splice($request_components, 2);
-            }
-            
-            $controller_class_name = ucfirst(strtolower($controller_name)) . 'Controller';
-            $controller_file_name = 'controllers/' . $controller_class_name . '.php';
-            
-            if (class_exists($controller_class_name)) {
-                $controller = new $controller_class_name($controller_name, $action_name);
-            } else {
-                die("Cannot find controller '$controller_name' in class '$controller_file_name'");
-            }
-            
-            if (method_exists($controller, $action_name)) {
-                call_user_func_array(array($controller, $action_name), $params);
-            } else {
-                die("Can not find action '$action_name' in controler '$controller_name'.");
-            }
+        if (isset($request_components[1])) {
+            $action_name = $request_components[1];
+        }
+        
+        if (isset($request_components[2])) {
+            $params = array_splice($request_components, 2);
+        }
+        
+        $controller_class_name = ucfirst(strtolower($controller_name)) . 'Controller';
+        $controller_file_name = 'controllers/' . $controller_class_name . '.php';
+        
+        if (class_exists($controller_class_name)) {
+            $controller = new $controller_class_name($controller_name, $action_name);
+        } else {
+            die("Cannot find controller '$controller_name' in class '$controller_file_name'");
+        }
+        
+        if (method_exists($controller, $action_name)) {
+            call_user_func_array(array($controller, $action_name), $params);
+        } else {
+            die("Can not find action '$action_name' in controler '$controller_name'.");
         }
     }
 }
