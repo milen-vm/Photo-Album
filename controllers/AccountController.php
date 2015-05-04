@@ -24,8 +24,10 @@ class AccountController extends BaseController {
             
             $register_result = $this->model->register($user_name, $first_name,
                 $last_name, $birth_date, $email, $password, $confirm_password);
+                
             if ($register_result === true) {
                 $this->addInfoMessage('Successful registration.');
+                $this->redirect('home');
             } else {
                 $errors = $this->model->getErrors();
                 foreach ($errors as $err) {
@@ -38,6 +40,22 @@ class AccountController extends BaseController {
     }
     
     public function login() {
+        if($this->is_post) {
+            
+            $user_name = trim($_POST['user_name']);
+            $password = trim($_POST['password']);
+            $login_result = $this->model->login($user_name, $password);
+            if ($login_result) {
+                $_SESSION['user_name'] = $user_name;
+                $this->addInfoMessage('Login successfuly.');
+                $this->redirect('home');
+            }
+            else {
+                var_dump($_POST);
+                $this->addErrorMessage('Login error.');
+                $this->redirect('account', 'login');
+            }
+        }
         
         $this->renderView(__FUNCTION__);
     }

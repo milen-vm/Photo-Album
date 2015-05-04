@@ -39,7 +39,7 @@
                             <a href="/Photo-Album/account/register">Register</a>
                         </li>
                         <li>
-                            <a href="#">Login</a>
+                            <a href="/Photo-Album/account/login">Login</a>
                         </li>
                     </ul>
 
@@ -52,4 +52,4 @@
                 </div><!-- /.navbar-collapse -->
             </div>
         </nav>
-        <?php include 'messages.php'; ?>
+        <?php include_once 'messages.php'; ?>

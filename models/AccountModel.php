@@ -41,21 +41,38 @@ class AccountModel extends BaseModel {
         }
     }
         
-    public function login() {
+    public function login($username, $password) {
+        $query = 'SELECT id, user_name, password_hash FROM users WHERE user_name = ?';
+        $stmt = self::$db->prepare($query);
+        $stmt->bind_param('s', $username);
         
+        if ($stmt->execute()) {
+            $stmt->bind_result($id, $user_name, $password_hash);
+            $stmt->fetch();
+           // while ($stmt->fetch()) {
+               // //do stuff with the data
+               // echo "$id, $user_name, $password_hash";
+           // }
+            if (password_verify($password, $password_hash)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function isEntryUnique($key, $entry) {
         $query = 'SELECT COUNT(id) FROM users WHERE ' . $key . ' = ?';
         $stmt = self::$db->prepare($query);
         $stmt->bind_param('s', $entry);
-        $stmt->execute();
+        
         if ($stmt->execute()) {
             $stmt->bind_result($result);
             $stmt->fetch();
             return $result === 0;
         }
         
+        // $this->errors[] = $stmt->error;
         throw new Exception($stmt->error);
     }
 
@@ -70,7 +87,7 @@ class AccountModel extends BaseModel {
             return true;
         }
         
-        // $this->errors['db'] = $stmt->error;
-        return false;
+        // $this->errors[] = $stmt->error;
+        throw new Exception($stmt->error);
     }
 }

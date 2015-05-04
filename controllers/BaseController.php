@@ -32,6 +32,7 @@ abstract class BaseController {
             if ($include_layout) {
                 $footer_file_name = DX_ROOT_DIR . 'views/layouts/' . $this->layout_name .
                     '/footer.php';
+                include_once $footer_file_name;
             }
         }
         
@@ -44,7 +45,7 @@ abstract class BaseController {
     }
     
     public function redirect($controller_Name, $action_name = null, $params = null) {
-        $url = urlencode($controller_Name);
+        $url = '/' . DX_ROOT_PATH . urlencode($controller_Name);
         if ($action_name != null) {
             $url .= '/' . urlencode($action_name);
         }
@@ -53,7 +54,8 @@ abstract class BaseController {
             $encoded_params = array_map('urlencode', $params);
             $url .= '/' . implode('/', $encoded_params);
         }
-
+        // var_dump($_SERVER);
+        var_dump($url);
         $this->redirectToUrl($url);
     }
     
