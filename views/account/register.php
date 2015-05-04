@@ -4,7 +4,7 @@
 
             <!-- Form Name -->
             <legend>
-                Register
+                Register Account
             </legend>
 
             <!-- Username input-->
@@ -89,3 +89,17 @@
         </fieldset>
     </form>
 </div>
+<!-- <script>
+    $('#register').on('click', function(ev) {
+        $.ajax({
+            method: 'POST',
+            url: '/Photo-Album/account/register',
+            success: function(data) {
+                console.log(data);
+            },
+            error: function() {
+                console.log('Cannot load AJAX data.');
+            }
+        })
+    });
+</script> -->

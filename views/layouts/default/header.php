@@ -12,7 +12,7 @@
         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"> -->
         <link rel="stylesheet" href="http://bootswatch.com/cerulean/bootstrap.min.css">
         <link rel="stylesheet" href="/Photo-Album/content/styles/styles.css" />
-        
+        <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-default" role="navigation">
@@ -52,3 +52,4 @@
                 </div><!-- /.navbar-collapse -->
             </div>
         </nav>
+        <?php include 'messages.php'; ?>

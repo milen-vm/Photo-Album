@@ -14,17 +14,24 @@ class AccountController extends BaseController {
     
     public function register() {
         if ($this->is_post) {
-            var_dump($_POST);
-            $user_name = trim($_POST['user_name']);
-            $first_name = trim($_POST['first_name']);
-            $last_name = trim($_POST['last_name']);
-            $birth_date = trim($_POST['birth_date']);
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
+            $user_name = $_POST['user_name'];
+            $first_name = $_POST['first_name'];
+            $last_name = $_POST['last_name'];
+            $birth_date = $_POST['birth_date'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
             $confirm_password = trim($_POST['confirm_password']);
             
-            $registration_result = $this->model->register($user_name, $first_name,
+            $register_result = $this->model->register($user_name, $first_name,
                 $last_name, $birth_date, $email, $password, $confirm_password);
+            if ($register_result === true) {
+                $this->addInfoMessage('Successful registration.');
+            } else {
+                $errors = $this->model->getErrors();
+                foreach ($errors as $err) {
+                    $this->addErrorMessage($err);
+                }
+            }
         }
         
         $this->renderView(__FUNCTION__);
