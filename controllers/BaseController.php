@@ -82,6 +82,14 @@ abstract class BaseController {
         return null;
     }
     
+    public function getUserId() {
+        if ($this->isLoggedIn()) {
+            return $_SESSION['user_id'];
+        }
+
+        return null;
+    }
+    
     public function authorize() {
         if (!$this->isLoggedIn()) {
             $this->addErrorMessage('Please login first.');

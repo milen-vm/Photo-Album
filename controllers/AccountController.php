@@ -14,12 +14,12 @@ class AccountController extends BaseController {
     
     public function register() {
         if ($this->is_post) {
-            $user_name = $_POST['user_name'];
-            $first_name = $_POST['first_name'];
-            $last_name = $_POST['last_name'];
-            $birth_date = $_POST['birth_date'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $user_name = trim($_POST['user_name']);
+            $first_name = trim($_POST['first_name']);
+            $last_name = trim($_POST['last_name']);
+            $birth_date = trim($_POST['birth_date']);
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
             $confirm_password = trim($_POST['confirm_password']);
             
             $register_result = $this->model->register($user_name, $first_name,
@@ -27,6 +27,7 @@ class AccountController extends BaseController {
                 
             if ($register_result === true) {
                 $this->addInfoMessage('Successful registration.');
+                
                 $this->redirect('home');
             } else {
                 $errors = $this->model->getErrors();
@@ -48,11 +49,12 @@ class AccountController extends BaseController {
             if ($login_result) {
                 $_SESSION['user_name'] = $user_name;
                 $_SESSION['full_name'] = $this->model->full_name;
+                $_SESSION['user_id'] = $this->model->user_id;
+                
                 $this->addInfoMessage('Login successfuly.');
                 $this->redirect('home');
             }
             else {
-                var_dump($_POST);
                 $this->addErrorMessage('Login error.');
                 $this->redirect('account', 'login');
             }

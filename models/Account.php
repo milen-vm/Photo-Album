@@ -12,13 +12,13 @@ class Account {
     
     public function __construct($user_name, $first_name, $last_name, $birth_date,
         $email, $password, $confirm_password) {
-        $this->user_name = trim($user_name);
-        $this->first_name = trim($first_name);
-        $this->last_name = trim($last_name);
-        $this->birth_date = trim($birth_date);
-        $this->email = trim($email);
-        $this->password = trim($password);
-        $this->confirm_password = trim($confirm_password);
+        $this->user_name = $user_name;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->birth_date = $birth_date;
+        $this->email = $email;
+        $this->password = $password;
+        $this->confirm_password = $confirm_password;
     }
         
     public function getUsername() {
@@ -136,7 +136,7 @@ class Account {
                     $this->errors[] = 'Invalid birth year.';
                 }
             } else {
-                $this->errors[] = 'Invalid date.';
+                $this->errors[] = 'Invalid birth date.';
             }
         } else {
             $this->errors[] = 'Invalid date format.';

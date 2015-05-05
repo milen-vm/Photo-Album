@@ -15,12 +15,22 @@ class AlbumController extends BaseController {
     public function create() {
         $this->authorize();
         if ($this->is_post) {
-            var_dump($_POST);
             $name = $_POST['name'];
             $description = $_POST['description'];
             $is_private = isset($_POST['is_private']) ? $_POST['is_private'] : '';
             
-            $create_result = $this->model->create($name, $description, $is_private);
+            $create_result = $this->model->create($name, $description, $is_private,
+                $this->getUserId());
+            
+            if ($create_result === true) {
+                $this->addInfoMessage('Album successfully created.');
+                $this->redirect('home');
+            } else {
+                $errors = $this->model->getErrors();
+                foreach ($errors as $err) {
+                    $this->addErrorMessage($err);
+                }
+            }
         }
         $this->renderView(__FUNCTION__);
     }

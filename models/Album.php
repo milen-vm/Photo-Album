@@ -66,7 +66,7 @@ class Album {
             return;
         }
         
-        if (intval($this->is_private) != 1 || intval($this->is_private) != 0) {
+        if (intval($this->is_private) != 1 && intval($this->is_private) != 0) {
             $this->is_private = null;
             $this->errors[] = 'Invalid privacy value. Your album is set to public.';
         }

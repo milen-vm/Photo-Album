@@ -43,7 +43,7 @@ class AccountModel extends BaseModel {
         
     public function login($username, $password) {
         $query = 'SELECT id, user_name, first_name, last_name, password_hash FROM users WHERE user_name = ?';
-        $stmt = self::$db->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->bind_param('s', $username);
         
         if ($stmt->execute()) {
@@ -55,6 +55,7 @@ class AccountModel extends BaseModel {
            // }
             if (password_verify($password, $password_hash)) {
                 $this->full_name = "$first_name $last_name";
+                $this->user_id = $id;
                 return true;
             }
         }
@@ -64,7 +65,7 @@ class AccountModel extends BaseModel {
 
     private function isEntryUnique($key, $entry) {
         $query = 'SELECT COUNT(id) FROM users WHERE ' . $key . ' = ?';
-        $stmt = self::$db->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->bind_param('s', $entry);
         
         if ($stmt->execute()) {
@@ -80,7 +81,7 @@ class AccountModel extends BaseModel {
     private function registerUser($account) {
         $query = 'INSERT INTO users (user_name, first_name, last_name,' .
             ' birth_date, email, password_hash) VALUES (?, ?, ?, ?, ?, ?)';
-        $stmt = self::$db->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->bind_param('ssssss', $account->getUsername(), $account->getFirstName(),
             $account->getLastName(), $account->getBirthDate(),
             $account->getEmail(), $account->getPasswordHash());
