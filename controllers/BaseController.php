@@ -54,9 +54,39 @@ abstract class BaseController {
             $encoded_params = array_map('urlencode', $params);
             $url .= '/' . implode('/', $encoded_params);
         }
-        // var_dump($_SERVER);
-        var_dump($url);
+
         $this->redirectToUrl($url);
+    }
+    
+    public function isLoggedIn() {
+        if (isset( $_SESSION['user_name'])) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    public function getUsername() {
+        if ($this->isLoggedIn()) {
+            return $_SESSION['user_name'];
+        }
+
+        return null;
+    }
+    
+    public function getFullName() {
+        if ($this->isLoggedIn()) {
+            return $_SESSION['full_name'];
+        }
+
+        return null;
+    }
+    
+    public function authorize() {
+        if (!$this->isLoggedIn()) {
+            $this->addErrorMessage('Please login first.');
+            $this->redirect('account', 'login');
+        }
     }
     
     public function addInfoMessage($msg) {

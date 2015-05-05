@@ -41,12 +41,13 @@ class AccountController extends BaseController {
     
     public function login() {
         if($this->is_post) {
-            
             $user_name = trim($_POST['user_name']);
             $password = trim($_POST['password']);
             $login_result = $this->model->login($user_name, $password);
+            
             if ($login_result) {
                 $_SESSION['user_name'] = $user_name;
+                $_SESSION['full_name'] = $this->model->full_name;
                 $this->addInfoMessage('Login successfuly.');
                 $this->redirect('home');
             }
@@ -61,8 +62,13 @@ class AccountController extends BaseController {
     }
     
     public function logout() {
-        
+        $this->authorize();
+
+        if($this->is_post) {
+            session_destroy();
+            session_start();
+            $this->addInfoMessage('You are logged out.');
+            $this->redirect('home');
+        }
     }
-    
-    
 }

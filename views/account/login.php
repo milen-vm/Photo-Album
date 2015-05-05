@@ -12,7 +12,7 @@
                 <label class="col-md-4 control-label" for="username">Username</label>
                 <div class="col-md-4">
                     <input id="username" name="user_name" placeholder="username"
-                        class="form-control input-md" type="text">
+                        class="form-control input-md" type="text" autofocus="">
                     <span class="help-block">Usernme for login to yours albums.</span>
                 </div>
             </div>

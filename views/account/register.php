@@ -1,22 +1,19 @@
 <div class="container">
     <form action="/Photo-Album/account/register" method="post" class="form-horizontal">
         <fieldset>
-
             <!-- Form Name -->
             <legend>
                 Register Account
             </legend>
-
             <!-- Username input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="username">Username</label>
                 <div class="col-md-4">
                     <input id="username" name="user_name" placeholder="max length 20 characters"
-                        class="form-control input-md" type="text">
+                        class="form-control input-md" type="text" autofocus="">
                     <span class="help-block">Usernme for login to yours albums.</span>
                 </div>
             </div>
-
             <!-- First name input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="first-name">First name</label>
@@ -26,7 +23,6 @@
                     <span class="help-block">First name will be displayed on site.</span>
                 </div>
             </div>
-
             <!-- Last name input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="last-name">Last name</label>
@@ -36,7 +32,6 @@
                     <span class="help-block">Last name will be displayed on site.</span>
                 </div>
             </div>
-
             <!-- Birth date input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="birth-date">Birth date</label>
@@ -46,7 +41,6 @@
                     <span class="help-block">Birth date is optional.</span>
                 </div>
             </div>
-
             <!-- Email input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="email">E-mail</label>
@@ -56,7 +50,6 @@
                     <span class="help-block">Enter valid e-mail.</span>
                 </div>
             </div>
-
             <!-- Password input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="password">Password</label>
@@ -66,7 +59,6 @@
                     <span class="help-block">Enter password.</span>
                 </div>
             </div>
-
             <!-- Confirm password input-->
             <div class="form-group">
                 <label class="col-md-4 control-label" for="confirm-password">Confirm Password</label>
@@ -76,7 +68,6 @@
                     <span class="help-block">Confirm password.</span>
                 </div>
             </div>
-
             <!-- Button -->
             <div class="form-group">
                 <label class="col-md-4 control-label">Submit</label>
@@ -85,21 +76,6 @@
                     class="btn btn-primary">
                 </div>
             </div>
-
         </fieldset>
     </form>
 </div>
-<!-- <script>
-    $('#register').on('click', function(ev) {
-        $.ajax({
-            method: 'POST',
-            url: '/Photo-Album/account/register',
-            success: function(data) {
-                console.log(data);
-            },
-            error: function() {
-                console.log('Cannot load AJAX data.');
-            }
-        })
-    });
-</script> -->

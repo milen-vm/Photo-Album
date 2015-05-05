@@ -26,30 +26,58 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><img src="/Photo-Album/content/images/logo.png" ></a>
+                    <a class="navbar-brand" href="/Photo-Album"><img src="/Photo-Album/content/images/logo.png" ></a>
                 </div>
-
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active">
                             <a href="/Photo-Album/home/index">Home</a>
                         </li>
-                        <li>
-                            <a href="/Photo-Album/account/register">Register</a>
-                        </li>
-                        <li>
-                            <a href="/Photo-Album/account/login">Login</a>
-                        </li>
+                        <?php if (!$this->isLoggedIn()) :?>
+                            <li>
+                                <a href="/Photo-Album/account/register">Register</a>
+                            </li>
+                            <li>
+                                <a href="/Photo-Album/account/login">Login</a>
+                            </li>
+                        <?php endif ?>
+                        <?php if ($this->isLoggedIn()) :?>
+                            <li>
+                                <a href="#">My Albums</a>
+                            </li>
+                            <li>
+                                <a href="/Photo-Album/album/create">Create</a>
+                            </li>
+                        <?php endif ?>
                     </ul>
-
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#">Logout</a>
-                        </li>
-                        
+                        <?php if ($this->isLoggedIn()) :?>
+                            <li>
+                                <p id="full-name" class="navbar-text">
+                                    Wellcome, <?php echo $this->getFullName(); ?>
+                                </p>
+                            </li>
+                            <li>
+                                <a id="logout" href="#">Logout</a>
+                            </li>
+                        <?php endif ?>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div>
         </nav>
         <?php include_once 'messages.php'; ?>
+        <script>
+            $('#logout').on('click', function(ev) {
+                $.ajax({
+                    method: 'POST',
+                    url: '/Photo-Album/account/logout',
+                    success: function(data) {
+                        location.reload(); 
+                    },
+                    error: function() {
+                        console.log('Cannot load AJAX data.');
+                    }
+                })
+            });
+        </script>
