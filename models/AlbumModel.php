@@ -4,11 +4,24 @@ class AlbumModel extends BaseModel {
 	private $errors = array();
     
 	public function __construct() {
-		parent::__construct();
+		parent::__construct(array('table' => 'albums'));
 	}
     
     public function getErrors() {
         return $this->errors;
+    }
+    
+    public function getAll($user_id) {
+        $query_params = array(
+            'where' => 'user_id = ?',
+            'columns' => 'id, name, description',
+            'limit' => 0
+        );
+        $bind_params = array( 'i', $user_id);
+        
+        $albums = $this->find($query_params, $bind_params);
+        
+        return $albums;
     }
     
     public function create($name, $description, $is_private, $user_id) {

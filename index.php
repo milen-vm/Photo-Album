@@ -17,4 +17,8 @@ function __autoload($class_name) {
     if (file_exists("models/$class_name.php")) {
         include "models/$class_name.php";
     }
+    
+    if (file_exists("libs/$class_name.php")) {
+        include "libs/$class_name.php";
+    }
 }

@@ -108,7 +108,8 @@ abstract class BaseController {
     public function addMessage($msg, $type) {
         if (!isset($_SESSION['messages'])) {
             $_SESSION['messages'] = array();
-        };
+        }
+        
         array_push($_SESSION['messages'],
             array('text' => $msg, 'type' => $type));
     }

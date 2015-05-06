@@ -13,6 +13,10 @@ class AccountController extends BaseController {
     }
     
     public function register() {
+        if ($this->isLoggedIn()) {
+            $this->redirect('home');
+        }
+        
         if ($this->is_post) {
             $user_name = trim($_POST['user_name']);
             $first_name = trim($_POST['first_name']);
@@ -27,10 +31,6 @@ class AccountController extends BaseController {
                 
             if ($register_result === true) {
                 $this->addInfoMessage('Successful registration.');
-                
-                if (!$this->makeDir(ALBUMS_PATH . $user_name)) {
-                    $this->addErrorMessage('Error to create user directory.');
-                }
                 
                 $login_result = $this->model->login($user_name, $password);
                 
@@ -52,6 +52,10 @@ class AccountController extends BaseController {
     }
     
     public function login() {
+        if ($this->isLoggedIn()) {
+            $this->redirect('home');
+        }
+        
         if($this->is_post) {
             $user_name = trim($_POST['user_name']);
             $password = trim($_POST['password']);

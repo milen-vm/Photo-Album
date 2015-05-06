@@ -8,9 +8,11 @@ class AlbumController extends BaseController {
         $this->model = new AlbumModel();
 	}
     
-    // public function index() {
-        // $this->renderView();
-    // }
+    public function index() {
+        $this->authorize();
+        $this->albums = $this->model->getAll($this->getUserId());
+        $this->renderView();
+    }
     
     public function create() {
         $this->authorize();
@@ -24,7 +26,7 @@ class AlbumController extends BaseController {
             
             if ($create_result) {
                 $this->addInfoMessage('Album successfully created.');
-                $path = ALBUMS_PATH . $this->getUsername() . '/' . $create_result;
+                $path = ALBUMS_PATH . $this->getUsername() . DIRECTORY_SEPARATOR . $create_result;
                 
                 if (!$this->makeDir($path)) {
                     $this->addErrorMessage('Error to create album directory.');
@@ -38,11 +40,12 @@ class AlbumController extends BaseController {
                 }
             }
         }
-        $this->renderView(__FUNCTION__);
-    }
-    
-    public function myalbums() {
         
         $this->renderView(__FUNCTION__);
     }
+    
+    // public function myalbums() {
+//         
+        // $this->renderView(__FUNCTION__);
+    // }
 }

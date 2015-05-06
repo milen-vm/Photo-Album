@@ -4,7 +4,7 @@ class AccountModel extends BaseModel {
 	private $errors = array();
     
 	public function __construct() {
-		parent::__construct();
+		parent::__construct(array('table' => 'users'));
         session_set_cookie_params(1800, '/');
 	}
     
