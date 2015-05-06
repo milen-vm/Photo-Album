@@ -15,15 +15,21 @@ class AlbumController extends BaseController {
     public function create() {
         $this->authorize();
         if ($this->is_post) {
-            $name = $_POST['name'];
-            $description = $_POST['description'];
+            $name = trim($_POST['name']);
+            $description = trim($_POST['description']);
             $is_private = isset($_POST['is_private']) ? $_POST['is_private'] : '';
             
             $create_result = $this->model->create($name, $description, $is_private,
                 $this->getUserId());
             
-            if ($create_result === true) {
+            if ($create_result) {
                 $this->addInfoMessage('Album successfully created.');
+                $path = ALBUMS_PATH . $this->getUsername() . '/' . $create_result;
+                
+                if (!$this->makeDir($path)) {
+                    $this->addErrorMessage('Error to create album directory.');
+                }
+                
                 $this->redirect('home');
             } else {
                 $errors = $this->model->getErrors();
@@ -32,6 +38,11 @@ class AlbumController extends BaseController {
                 }
             }
         }
+        $this->renderView(__FUNCTION__);
+    }
+    
+    public function myalbums() {
+        
         $this->renderView(__FUNCTION__);
     }
 }

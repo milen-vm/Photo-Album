@@ -14,7 +14,6 @@ class AlbumModel extends BaseModel {
     public function create($name, $description, $is_private, $user_id) {
         $album = new Album($name, $description, $is_private);
         if ($album->isValid()) {
-            var_dump($album);
             return $this->createAlbum($album, $user_id);
         }
         
@@ -30,7 +29,7 @@ class AlbumModel extends BaseModel {
                 $album->getIsPrivate(), $user_id);
                 
             if ($stmt->execute()) {
-                return true;
+                return $stmt->insert_id;
             }
             
             // printf("Error message: %s\n", $stmt->error);

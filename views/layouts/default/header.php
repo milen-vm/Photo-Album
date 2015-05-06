@@ -44,7 +44,7 @@
                         <?php endif ?>
                         <?php if ($this->isLoggedIn()) :?>
                             <li>
-                                <a href="#">My Albums</a>
+                                <a href="/Photo-Album/album/myalbums">My Albums</a>
                             </li>
                             <li>
                                 <a href="/Photo-Album/album/create">Create</a>

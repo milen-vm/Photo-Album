@@ -113,4 +113,8 @@ abstract class BaseController {
             array('text' => $msg, 'type' => $type));
     }
     
+    public function makeDir($path, $mode = 0777) {
+         return is_dir($path) || mkdir($path, $mode, true);
+    }
+    
 }

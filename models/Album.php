@@ -62,7 +62,7 @@ class Album {
     
     private function validateIsPrivate() {
         if (empty($this->is_private)) {
-            $this->is_private = null;
+            $this->is_private = 0;
             return;
         }
         

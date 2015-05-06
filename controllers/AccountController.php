@@ -28,6 +28,17 @@ class AccountController extends BaseController {
             if ($register_result === true) {
                 $this->addInfoMessage('Successful registration.');
                 
+                if (!$this->makeDir(ALBUMS_PATH . $user_name)) {
+                    $this->addErrorMessage('Error to create user directory.');
+                }
+                
+                $login_result = $this->model->login($user_name, $password);
+                
+                if ($login_result) {
+                    $this->createUserSession($user_name);
+                    
+                    $this->redirect('home');
+                }
                 $this->redirect('home');
             } else {
                 $errors = $this->model->getErrors();
@@ -47,9 +58,7 @@ class AccountController extends BaseController {
             $login_result = $this->model->login($user_name, $password);
             
             if ($login_result) {
-                $_SESSION['user_name'] = $user_name;
-                $_SESSION['full_name'] = $this->model->full_name;
-                $_SESSION['user_id'] = $this->model->user_id;
+                $this->createUserSession($user_name);
                 
                 $this->addInfoMessage('Login successfuly.');
                 $this->redirect('home');
@@ -72,5 +81,11 @@ class AccountController extends BaseController {
             $this->addInfoMessage('You are logged out.');
             $this->redirect('home');
         }
+    }
+    
+    private function createUserSession($user_name) {
+        $_SESSION['user_name'] = $user_name;
+        $_SESSION['full_name'] = $this->model->full_name;
+        $_SESSION['user_id'] = $this->model->user_id;
     }
 }
