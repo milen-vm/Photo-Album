@@ -6,7 +6,7 @@
      private $size;
      private $errors = array();
      
-     private function __construct() {
+     public function __construct() {
          $full_file_name = basename($_FILES['photo']['name']);
          $this->name = basename($_FILES['photo']['name']);
          $this->type = pathinfo($full_file_name, PATHINFO_EXTENSION);
@@ -15,10 +15,6 @@
      
      public function getName() {
          return $this->name;
-     }
-     
-     public function getNewName() {
-         return $this->new_name;
      }
      
      public function getType() {
@@ -38,7 +34,7 @@
          $target_path = ALBUMS_PATH . DIRECTORY_SEPARATOR . $album_id .
              DIRECTORY_SEPARATOR;
             
-         while (file_exists($target_path . $new_file_name . '.' . $file_type)) {
+         while (file_exists($target_path . $new_file_name . '.' . $this->getType())) {
              $new_file_name = uniqid('img_');
          }
          

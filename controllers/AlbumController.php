@@ -65,30 +65,4 @@ class AlbumController extends BaseController {
         
         $this->renderView(__FUNCTION__);
     }
-    
-    
-    
-    private function uploadImage($album_id) {
-        $full_file_name = basename($_FILES['photo']['name']);
-        $file_type = pathinfo($full_file_name, PATHINFO_EXTENSION);
-        
-        // $new_file_name = uniqid('img_');
-        // $target_path = ALBUMS_PATH . DIRECTORY_SEPARATOR . $album_id .
-            // DIRECTORY_SEPARATOR;
-//             
-        // while (file_exists($target_path . $new_file_name . '.' . $file_type)) {
-            // $new_file_name = uniqid('img_');
-        // }
-        
-        $target_file = $target_path . $new_file_name . '.' . $file_type;
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_file)) {
-            // $this->addInfoMessage('The image '. basename( $_FILES["fileToUpload"]["name"]) . 
-                // 'has been uploaded.');
-            return true;
-        } else {
-            $this->addErrorMessage('There was an error uploading your image.');
-            return false;
-        }
-    }
-        
 }

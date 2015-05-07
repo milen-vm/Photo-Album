@@ -20,6 +20,33 @@ abstract class BaseModel {
         $db = Database::get_instance();
         $this->db = $db::get_db();
     }
+
+    public function add($pairs) {
+        $columns = array_keys($pairs);
+        $bind_params = array_values($pairs);
+        $params_count = count($bind_params);
+
+        $types = $this->generateTypesString($bind_params);
+        array_unshift($bind_params, $types);
+
+        $placeholders = str_repeat('?,', $params_count);
+        $placeholders = rtrim($placeholders, ',');
+       
+        $query = 'INSERT INTO ' . $this->table . ' (' . implode(',', $columns) . ') ' .
+            'VALUES (' . $placeholders . ')';
+
+        if ($stmt = $this->db->prepare($query)) {
+            call_user_func_array(array($stmt, 'bind_param'),
+                $this->makeValuesReferenced($bind_params));
+            if ($stmt->execute()) {
+                return $stmt->insert_id;
+            }
+            // printf("Error message: %s\n", $stmt->error);
+            return false;
+        }
+        // printf("Error message: %s\n", $this->db->error);
+        return false;
+    }
     
     public function find($query_params = array(), $bind_params = array()) {
         $query_params = array_merge( array(
@@ -77,6 +104,23 @@ abstract class BaseModel {
             echo "stmt execut error:" . $stmt->error;
             die;
         }
+    }
+
+    private function generateTypesString($params) {
+        $types = '';                        
+        foreach($params as $param) {        
+            if(is_int($param)) {
+                $types .= 'i';
+            } elseif (is_float($param)) {
+                $types .= 'd';
+            } elseif (is_string($param)) {
+                $types .= 's';
+            } else {
+                $types .= 'b';
+            }
+        }
+    
+        return $types;
     }
 
     private function makeValuesReferenced($arr) {
