@@ -7,6 +7,10 @@ class ImageModel extends BaseModel {
 		parent::__construct(array('table' => 'images'));
 	}
     
+    public function getErrors() {
+        return $this->errors;
+    }
+    
     public function addImage($album_id, $user_id) {
         $image = new Image();
         if ($image->isValid()) {
@@ -20,8 +24,20 @@ class ImageModel extends BaseModel {
                     'size' => $image->getSize(),
                     'album_id' => $album_id
                 );
-                $image_id = $this->add($pairs);
-                echo "image id $image_id";
+                
+                $image_id = $this->add($pairs);     // add image meta data to database
+                if (!$image_id) {
+                    $this->errors[] = 'Database error. Can not upload image.';
+                    return false;
+                }
+                
+                $upload_result = $this->uploadImage($album_id, $new_name, $image->getType());     // save image to hard drive
+                if ($upload_result) {
+                    return true;
+                }
+                // TODO Add function to delete image from database if upload fails
+                $this->errors[] = 'There was an error uploading your image.';
+                return false;
             }
             
             $this->errors[] = 'You do not have permission to upload in this album.';
@@ -48,26 +64,15 @@ class ImageModel extends BaseModel {
         return false;
     }
     
-    private function uploadImage($album_id) {
-        $full_file_name = basename($_FILES['photo']['name']);
-        $file_type = pathinfo($full_file_name, PATHINFO_EXTENSION);
-        
-        // $new_file_name = uniqid('img_');
-        // $target_path = ALBUMS_PATH . DIRECTORY_SEPARATOR . $album_id .
-            // DIRECTORY_SEPARATOR;
-//             
-        // while (file_exists($target_path . $new_file_name . '.' . $file_type)) {
-            // $new_file_name = uniqid('img_');
-        // }
-        
-        $target_file = $target_path . $new_file_name . '.' . $file_type;
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_file)) {
-            // $this->addInfoMessage('The image '. basename( $_FILES["fileToUpload"]["name"]) . 
-                // 'has been uploaded.');
+    private function uploadImage($album_id, $file_name, $file_type) {        
+        $target_path = ALBUMS_PATH . DIRECTORY_SEPARATOR . $album_id .
+             DIRECTORY_SEPARATOR . $file_name . '.' . $file_type;
+             
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_path)) {
+            
             return true;
-        } else {
-            $this->addErrorMessage('There was an error uploading your image.');
-            return false;
         }
+
+        return false;
     }
 }

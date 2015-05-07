@@ -47,7 +47,7 @@ abstract class BaseModel {
         // printf("Error message: %s\n", $this->db->error);
         return false;
     }
-    
+    // TODO Add using function generateTypesString and extract build query function
     public function find($query_params = array(), $bind_params = array()) {
         $query_params = array_merge( array(
             'table' => $this->table,
@@ -136,6 +136,4 @@ abstract class BaseModel {
         
         return $arr;
     }
-
-
 }

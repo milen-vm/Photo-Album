@@ -23,27 +23,19 @@ class ImageController extends BaseController {
            
             $add_result = $this->model->addImage($album_id, $this->getUserId());
             if ($add_result) {
+                $this->addInfoMessage('Successfuly uploaded image ' . $full_file_name . '.');
+                $this->redirect('album', 'browse', array($album_id));
+            } else {
+                $errors = $this->model->getErrors();
+                foreach ($errors as $err) {
+                    $this->addErrorMessage($err);
+                }
                 
+                $this->redirect('album', 'browse', array($album_id));
             }
-            
-            
-            
-            
-            
-            // if ($this->isValidImage()) {
-                // if ($this->uploadImage($album_id)) {
-                    // $this->model->addImage();
-                // } else {
-//                     
-                // }
-//                 
-                // $this->redirect('album', 'browse', array($album_id));
-            // }
-//             
-            // $this->redirect('album', 'browse', array($album_id));
         }
         
-        // $this->addErrorMessage('No photo selected.');
-        // $this->redirect('album', 'browse', array($album_id));
+        $this->addErrorMessage('No photo selected.');
+        $this->redirect('album', 'browse', array($album_id));
     }
 }
