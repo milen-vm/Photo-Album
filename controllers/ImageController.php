@@ -8,6 +8,18 @@ class ImageController extends BaseController {
         $this->model = new ImageModel();
 	}
     
+    public function browse($id) {
+        $this->authorize();
+        if (!isset($id)) {
+            $this->addErrorMessage('Album for browse is not selected.');
+            $this->redirect('album');
+        }
+        
+        $this->album_id = $id;
+        $_SESSION['album_id'] = $id;
+        $this->renderView(__FUNCTION__);
+    }
+    
     public function upload() {
         $this->authorize();
         if (!isset($_SESSION['album_id'])) {
@@ -24,18 +36,18 @@ class ImageController extends BaseController {
             $add_result = $this->model->addImage($album_id, $this->getUserId());
             if ($add_result) {
                 $this->addInfoMessage('Successfuly uploaded image ' . $full_file_name . '.');
-                $this->redirect('album', 'browse', array($album_id));
+                $this->redirect('image', 'browse', array($album_id));
             } else {
                 $errors = $this->model->getErrors();
                 foreach ($errors as $err) {
                     $this->addErrorMessage($err);
                 }
                 
-                $this->redirect('album', 'browse', array($album_id));
+                $this->redirect('image', 'browse', array($album_id));
             }
         }
         
         $this->addErrorMessage('No photo selected.');
-        $this->redirect('album', 'browse', array($album_id));
+        $this->redirect('image', 'browse', array($album_id));
     }
 }

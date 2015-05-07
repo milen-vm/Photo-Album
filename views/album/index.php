@@ -8,7 +8,7 @@
                 <?php foreach ($this->albums as $album) : ?>
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail album-title">
-                            <a href="/Photo-Album/album/browse/<?= htmlspecialchars($album['id']) ?>" title="Browse">
+                            <a href="/Photo-Album/image/browse/<?= htmlspecialchars($album['id']) ?>" title="Browse">
                                 <img src="/Photo-Album/content/images/empty-album-small.png" alt="Title photo">
                             </a>
                             <div class="caption">

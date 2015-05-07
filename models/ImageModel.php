@@ -47,7 +47,7 @@ class ImageModel extends BaseModel {
         $this->errors = $image->getErrors();
         return false;
     }
-    
+
     private function isUserOwnsAlbum($album_id, $user_id) {
         $query_params = array(
             'table' => 'albums',
