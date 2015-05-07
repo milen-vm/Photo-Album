@@ -11,13 +11,13 @@ class AlbumModel extends BaseModel {
         return $this->errors;
     }
     
-    public function getAll($user_id) {
+    public function getAll($user_id, $page, $page_size) {
         $query_params = array(
+            'columns' => 'id, name',
             'where' => 'user_id = ?',
-            'columns' => 'id, name, description',
-            'limit' => 0
+            'limit' => '?, ?'
         );
-        $bind_params = array( 'i', $user_id);
+        $bind_params = array( 'iii', $user_id, $page, $page_size);
         
         $albums = $this->find($query_params, $bind_params);
         

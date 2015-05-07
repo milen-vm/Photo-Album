@@ -25,7 +25,7 @@ class AccountController extends BaseController {
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
             $confirm_password = trim($_POST['confirm_password']);
-            
+            // TODO Save field values on wrong input after submit - get account from model to view
             $register_result = $this->model->register($user_name, $first_name,
                 $last_name, $birth_date, $email, $password, $confirm_password);
                 

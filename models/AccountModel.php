@@ -5,7 +5,7 @@ class AccountModel extends BaseModel {
     
 	public function __construct() {
 		parent::__construct(array('table' => 'users'));
-        session_set_cookie_params(1800, '/');
+        session_set_cookie_params(1800, '/', 'localhost', false, true);
 	}
     
     public function getErrors() {

@@ -13,4 +13,6 @@ define('FIRST_LAST_NAME_MIN_LENGTH', 2);
 define('MIN_BIRTH_YEAR', 1920);
 define('PASSWORD_MIN_LENGTH', 3);
 
-define('ALBUMS_PATH', 'albums/');
+define('ALBUMS_PATH', 'albums');
+define('ALBUMS_PAGE_SIZE', 9);
+define('MAX_IMAGE_FILE_SIZE', 1024000);

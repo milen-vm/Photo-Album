@@ -24,8 +24,8 @@ abstract class BaseModel {
     public function find($query_params = array(), $bind_params = array()) {
         $query_params = array_merge( array(
             'table' => $this->table,
-            'where' => '',
             'columns' => '*',
+            'where' => '',
             'limit' => 0
         ), $query_params );
 
@@ -35,9 +35,9 @@ abstract class BaseModel {
         if(!empty($query_params['where'])) {
             $query .= ' WHERE ' . $query_params['where'];
         }
-        
+        // TODO Add order by option in query
         if(!empty($query_params['limit'])) {
-            $query .= ' LIMIT ' . $query_params['where'];
+            $query .= ' LIMIT ' . $query_params['limit'];
         }
         
         $stmt = $this->db->prepare($query);
@@ -63,16 +63,16 @@ abstract class BaseModel {
             $result = array();
             $i = 0;
             while ($stmt->fetch()) {
-                $results[$i] = array();
+                $result[$i] = array();
                 
                 foreach($fields as $k => $v) {
-                    $results[$i][$k] = $v;
+                    $result[$i][$k] = $v;
                 }
                     
                 $i++;
             }
 
-           return $results;
+           return $result;
         } else {
             echo "stmt execut error:" . $stmt->error;
             die;

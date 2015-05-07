@@ -10,7 +10,7 @@
                 <label class="col-md-4 control-label" for="textinput">Name</label>
                 <div class="col-md-4">
                     <input id="textinput" name="name" placeholder="max length 50 characters"
-                        class="form-control input-md" type="text">
+                        class="form-control input-md" type="text" />
                     <span class="help-block">Enter album name.</span>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="col-md-4">
                     <div class="checkbox">
                         <label for="checkboxes-0">
-                            <input name="is_private" id="checkboxes-0" value="1" type="checkbox">
+                            <input name="is_private" id="checkboxes-0" value="1" type="checkbox" />
                             Private album </label>
                         <span class="help-block">Only you can see this album.</span>
                     </div>
@@ -40,7 +40,7 @@
                 <label class="col-md-4 control-label">Submit</label>
                 <div class="col-md-4">
                     <input id="register" type="submit" value="Create" name="submit"
-                    class="btn btn-primary">
+                    class="btn btn-primary" />
                 </div>
             </div>
         </fieldset>
