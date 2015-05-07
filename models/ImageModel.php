@@ -10,6 +10,18 @@ class ImageModel extends BaseModel {
     public function getErrors() {
         return $this->errors;
     }
+    public function getImagesPaginated($album_id, $page, $page_size) {
+        $query_params = array(
+            'columns' => 'name, type',
+            'where' => 'album_id = ?',
+            'orderby' => 'create_date DESC',
+            'limit' => '?, ?'
+        );
+        $bind_params = array($album_id, $page, $page_size);
+        $images = $this->find($query_params, $bind_params);
+
+        return $images;
+    }
     
     public function addImage($album_id, $user_id) {
         $image = new Image();
@@ -33,7 +45,7 @@ class ImageModel extends BaseModel {
                 
                 $upload_result = $this->uploadImage($album_id, $new_name, $image->getType());     // save image to hard drive
                 if ($upload_result) {
-                    return true;
+                    return $image_id;
                 }
                 // TODO Add function to delete image from database if upload fails
                 $this->errors[] = 'There was an error uploading your image.';
@@ -48,17 +60,17 @@ class ImageModel extends BaseModel {
         return false;
     }
 
-    private function isUserOwnsAlbum($album_id, $user_id) {
+    public function isUserOwnsAlbum($album_id, $user_id) {
         $query_params = array(
             'table' => 'albums',
-            'columns' => 'id',
-            'where' => 'user_id = ?');
-        $bind_params = array('i', $user_id);
+            'columns' => 'user_id', 
+            'where' => 'id = ?');
+        $bind_params = array($album_id);
         
         $result = $this->find($query_params, $bind_params);
         
-        if (isset($result[0]['id'])) {
-            return true;
+        if (isset($result[0]['user_id'])) {
+            return $result[0]['user_id'] == $user_id;
         }
         
         return false;

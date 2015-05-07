@@ -17,8 +17,7 @@ class AlbumModel extends BaseModel {
             'where' => 'user_id = ?',
             'limit' => '?, ?'
         );
-        $bind_params = array( 'iii', $user_id, $page, $page_size);
-        
+        $bind_params = array($user_id, $page, $page_size);
         $albums = $this->find($query_params, $bind_params);
         
         return $albums;
@@ -35,25 +34,18 @@ class AlbumModel extends BaseModel {
     }
     
     private function createAlbum($album, $user_id) {
-        $query = 'INSERT INTO albums (name, description, is_private, user_id)' . //  
-            ' VALUES (?, ?, ?, ?)';
-        if ($stmt = $this->db->prepare($query)) {
-            $stmt->bind_param('ssii', $album->getName(), $album->getDescription(),
-                $album->getIsPrivate(), $user_id);
-                
-            if ($stmt->execute()) {
-                return $stmt->insert_id;
-            }
-            
-            // printf("Error message: %s\n", $stmt->error);
-            $this->errors[] = 'Data base error.';
+        $pairs = array(
+                    'name' => $album->getName(),
+                    'description' => $album->getDescription(),
+                    'is_private' => $album->getIsPrivate(),
+                    'user_id' => $user_id
+                );
+        $album_id = $this->add($pairs);
+        if (!$album_id) {
+            $this->errors[] = 'Database error. Can not upload image.';
             return false;
         }
-        
-        // printf("Error message: %s\n", $this->db->error);
-        $this->errors[] = 'Data base error.';
-        return false;
-    }
-    
-    
+
+        return $album_id;
+    }       
 }

@@ -41,35 +41,28 @@ abstract class BaseModel {
             if ($stmt->execute()) {
                 return $stmt->insert_id;
             }
-            // printf("Error message: %s\n", $stmt->error);
+            printf("1 Error message: %s\n", $stmt->error);
             return false;
         }
-        // printf("Error message: %s\n", $this->db->error);
+        printf("Error message: %s\n", $this->db->error);
         return false;
     }
-    
-    // TODO Add using function generateTypesString and extract build query function
+
     public function find($query_params = array(), $bind_params = array()) {
         $query_params = array_merge( array(
             'table' => $this->table,
             'columns' => '*',
             'where' => '',
+            'orderby' => '',
             'limit' => 0
         ), $query_params );
+        
+        $types = $this->generateTypesString($bind_params);
+        array_unshift($bind_params, $types);
 
-        $query = 'SELECT ' . $query_params['columns'] . ' FROM '.
-            $query_params['table'] ;
-        
-        if(!empty($query_params['where'])) {
-            $query .= ' WHERE ' . $query_params['where'];
-        }
-        // TODO Add order by option in query
-        if(!empty($query_params['limit'])) {
-            $query .= ' LIMIT ' . $query_params['limit'];
-        }
-        
+        $query = $this->buildQuery($query_params);       
         $stmt = $this->db->prepare($query);
-        
+
         if (count($bind_params) > 0) {
             call_user_func_array(array($stmt, 'bind_param'),
                 $this->makeValuesReferenced($bind_params));
@@ -105,6 +98,25 @@ abstract class BaseModel {
             echo "stmt execut error:" . $stmt->error;
             die;
         }
+    }
+
+    private function buildQuery($query_params) {
+        $query = 'SELECT ' . $query_params['columns'] . ' FROM '.
+            $query_params['table'] ;
+        
+        if(!empty($query_params['where'])) {
+            $query .= ' WHERE ' . $query_params['where'];
+        }
+        // ORDER BY column_name ASC|DESC, column_name ASC|DESC;
+        if(!empty($query_params['orderby'])) {
+            $query .= ' ORDER BY ' . $query_params['orderby'];
+        }
+
+        if(!empty($query_params['limit'])) {
+            $query .= ' LIMIT ' . $query_params['limit'];
+        }
+        
+        return $query;
     }
 
     private function generateTypesString($params) {

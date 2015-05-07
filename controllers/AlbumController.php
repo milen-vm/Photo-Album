@@ -16,25 +16,11 @@ class AlbumController extends BaseController {
         // TODO add validation for max page - get count for albums from db
         $this->page = $page;
         $this->page_size = $page_size;
-        
         $start = $page * $page_size;
+        
         $this->albums = $this->model->getAll($this->getUserId(), $start, $page_size);
         $this->renderView();
-    }
-    
-    // public function browse($id) {
-        // $this->authorize();
-        // if (!isset($id)) {
-            // $this->addErrorMessage('Album for browse is not selected.');
-            // $this->redirect('album');
-        // }
-//         
-        // $this->album_id = $id;
-        // $_SESSION['album_id'] = $id;
-        // $this->renderView(__FUNCTION__);
-    // }
-    
-    
+    }        
     
     public function create() {
         $this->authorize();
