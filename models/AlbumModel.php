@@ -10,7 +10,7 @@ class AlbumModel extends BaseModel {
     public function getErrors() {
         return $this->errors;
     }
-    
+    // TODO Rename to get whit pagination and create function getAll
     public function getAll($user_id, $page, $page_size) {
         $query_params = array(
             'columns' => 'id, name',
@@ -54,4 +54,6 @@ class AlbumModel extends BaseModel {
         $this->errors[] = 'Data base error.';
         return false;
     }
+    
+    
 }

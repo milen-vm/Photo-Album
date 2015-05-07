@@ -52,7 +52,7 @@
         </fieldset>
     </div>
     <!-- Upload photo form -->
-    <form action="/Photo-Album/album/upload" method="post"
+    <form action="/Photo-Album/image/upload" method="post"
         enctype="multipart/form-data" class="form-horizontal">
         <fieldset>
             <!-- Form Name -->
