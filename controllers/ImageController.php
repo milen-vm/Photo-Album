@@ -32,7 +32,7 @@ class ImageController extends BaseController {
         $images = $this->model->getImagesPaginated($album_id, $page, $page_size); // tuka sym
         $this->images_paths = array();
         foreach ($images as $image) {
-            $path = '' . DX_ROOT_PATH . ALBUMS_PATH . '/' . $album_id .
+            $path = '/' . DX_ROOT_PATH . ALBUMS_PATH . '/' . $album_id .
                 '/' . $image['name'] . '.' . $image['type'];
             $this->images_paths[] = $path;
         }
