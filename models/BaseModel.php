@@ -41,10 +41,10 @@ abstract class BaseModel {
             if ($stmt->execute()) {
                 return $stmt->insert_id;
             }
-            printf("1 Error message: %s\n", $stmt->error);
+            // printf("1 Error message: %s\n", $stmt->error);
             return false;
         }
-        printf("Error message: %s\n", $this->db->error);
+        // printf("Error message: %s\n", $this->db->error);
         return false;
     }
 
@@ -52,17 +52,20 @@ abstract class BaseModel {
         $query_params = array_merge( array(
             'table' => $this->table,
             'columns' => '*',
+            'join' => '',
             'where' => '',
             'orderby' => '',
             'limit' => 0
         ), $query_params );
         
-        $types = $this->generateTypesString($bind_params);
-        array_unshift($bind_params, $types);
-
-        $query = $this->buildQuery($query_params);       
+        if (count($bind_params) > 0) {
+            $types = $this->generateTypesString($bind_params);
+            array_unshift($bind_params, $types);
+        }
+        
+        $query = $this->buildQuery($query_params);   
         $stmt = $this->db->prepare($query);
-
+        
         if (count($bind_params) > 0) {
             call_user_func_array(array($stmt, 'bind_param'),
                 $this->makeValuesReferenced($bind_params));
@@ -103,6 +106,10 @@ abstract class BaseModel {
     private function buildQuery($query_params) {
         $query = 'SELECT ' . $query_params['columns'] . ' FROM '.
             $query_params['table'] ;
+        
+        if (!empty($query_params['join'])) {
+            $query .= ' JOIN ' . $query_params['join'];
+        }
         
         if(!empty($query_params['where'])) {
             $query .= ' WHERE ' . $query_params['where'];

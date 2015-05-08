@@ -83,7 +83,7 @@ class AccountController extends BaseController {
             session_destroy();
             session_start();
             $this->addInfoMessage('You are logged out.');
-            $this->redirect('home');
+            $this->redirect('home', 'index');
         }
     }
     

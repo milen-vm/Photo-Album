@@ -27,7 +27,7 @@ abstract class BaseController {
                     '/header.php';
                 include_once $header_file_name;
             }
-            
+
             include_once $view_file_name;
             if ($include_layout) {
                 $footer_file_name = DX_ROOT_DIR . 'views/layouts/' . $this->layout_name .

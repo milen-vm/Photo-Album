@@ -23,6 +23,17 @@ class ImageModel extends BaseModel {
         return $images;
     }
     
+    public function getCount($album_id) {
+        $query_params = array(
+            'columns' => 'COUNT(id)',
+            'where' => 'album_id = ?'
+        );
+        $bind_params = array($album_id);
+        $result = $this->find($query_params, $bind_params);
+
+        return $result[0]['COUNT(id)'];
+    }
+    
     public function addImage($album_id, $user_id) {
         $image = new Image();
         if ($image->isValid()) {

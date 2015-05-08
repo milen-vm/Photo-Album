@@ -14,22 +14,29 @@ class ImageController extends BaseController {
             $this->addErrorMessage('Album for browse is not selected.');
             $this->redirect('album');
         }
-
+        
+        $this->album_id = $album_id;
         $is_user_owns_album = $this->model->isUserOwnsAlbum($album_id, $this->getUserId());
         if (!$is_user_owns_album) {
             $this->addErrorMessage('Invalid album selected.');
             $this->redirect('album');
         }
         
+        $album_image_count = $this->model->getCount($album_id);
+        $total_pages = ($album_image_count + $page_size - 1) / $page_size;
+        if (($page + 1) > $total_pages) {
+            $page -= 1;
+        }
+        
         if ($page < 0) {
             $page = 0;
         }
-        // TODO add validation for max page - get count for albums from db
+
         $this->page = $page;
         $this->page_size = $page_size;
         $start = $page * $page_size;
         
-        $images = $this->model->getImagesPaginated($album_id, $page, $page_size); // tuka sym
+        $images = $this->model->getImagesPaginated($album_id, $start, $page_size);
         $this->images_paths = array();
         foreach ($images as $image) {
             $path = '/' . DX_ROOT_PATH . ALBUMS_PATH . '/' . $album_id .

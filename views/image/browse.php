@@ -4,11 +4,21 @@
     </legend>
     <div class="row">
         <?php foreach ($this->images_paths as $path) : ?>
-        <div class="col-lg-3 col-sm-4 col-xs-6">
-            <a title="Photo" href="<?=htmlentities($path)?>"> <img class="thumbnail img-responsive" alt="photo" src="<?=htmlentities($path)?>"> </a>
+        <div class="col-xs-6 col-md-3">
+            <a href="<?=htmlentities($path)?>" title="Photo" class="thumbnail album-list">
+                <img src="<?=htmlentities($path)?>" alt="photo" />
+            </a>
         </div>
         <?php endforeach ?>
     </div>
+    <ul class="pager">
+        <li>
+            <a href="/Photo-Album/image/browse/<?=htmlspecialchars($this->album_id)?>/<?=htmlspecialchars($this->page - 1)?>/<?=htmlspecialchars($this->page_size)?>">Previous</a>             
+        </li>
+        <li>
+            <a href="/Photo-Album/image/browse/<?=htmlspecialchars($this->album_id)?>/<?=htmlspecialchars($this->page + 1)?>/<?=htmlspecialchars($this->page_size)?>">Next</a>               
+        </li>
+    </ul>
     <!-- Upload photo form -->
     <form action="/Photo-Album/image/upload" method="post"
     enctype="multipart/form-data" class="form-horizontal">
