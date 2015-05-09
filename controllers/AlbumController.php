@@ -13,7 +13,17 @@ class AlbumController extends BaseController {
         if ($page < 0) {
             $page = 0;
         }
-        // TODO add validation for max page - get count for albums from db
+        
+        $albums_count = $this->model->getCount($this->getUserId());
+        $total_pages = ($albums_count + $page_size - 1) / $page_size;
+        if (($page + 1) > $total_pages) {
+            $page -= 1;
+        }
+        
+        if ($page < 0) {
+            $page = 0;
+        }
+
         $this->page = $page;
         $this->page_size = $page_size;
         $start = $page * $page_size;

@@ -23,6 +23,17 @@ class AlbumModel extends BaseModel {
         return $albums;
     }
     
+    public function getCount($user_id) {
+        $query_params = array(
+            'columns' => 'COUNT(id)',
+            'where' => 'user_id = ?'
+        );
+        $bind_params = array($user_id);
+        $result = $this->find($query_params, $bind_params);
+
+        return $result[0]['COUNT(id)'];
+    }
+    
     public function create($name, $description, $is_private, $user_id) {
         $album = new Album($name, $description, $is_private);
         if ($album->isValid()) {

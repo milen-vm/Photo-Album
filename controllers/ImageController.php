@@ -37,11 +37,27 @@ class ImageController extends BaseController {
         $start = $page * $page_size;
         
         $images = $this->model->getImagesPaginated($album_id, $start, $page_size);
-        $this->images_paths = array();
-        foreach ($images as $image) {
-            $path = '/' . DX_ROOT_PATH . ALBUMS_PATH . '/' . $album_id .
-                '/' . $image['name'] . '.' . $image['type'];
-            $this->images_paths[] = $path;
+        $this->images_data = array();
+        
+        if (count($images) === 0) {
+            $this->addInfoMessage('This album is empty.');
+        } else {
+            $read_errors = 0;
+            foreach ($images as $image) {
+                $path = ALBUMS_PATH . '/' . $album_id .
+                    '/' . $image['name'] . '.' . $image['type'];
+                if (is_readable($path)) {
+                    $data = file_get_contents($path);
+                    $base64 = 'data:image/' . $image['type'] . ';base64,' . base64_encode($data);
+                    $this->images_data[] = $base64;
+                } else {
+                    ++$read_errors;
+                }
+            }
+            
+            if ($read_errors > 0) {
+                $this->addErrorMessage("Something goes wrong. There is $read_errors broken images.");
+            }
         }
         
         $_SESSION['album_id'] = $album_id;
