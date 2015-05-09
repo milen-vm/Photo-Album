@@ -19,6 +19,7 @@ class AlbumController extends BaseController {
         $start = $page * $page_size;
         
         $this->albums = $this->model->getAll($this->getUserId(), $start, $page_size);
+        var_dump($this->albums);
         $this->renderView();
     }        
     
@@ -38,6 +39,7 @@ class AlbumController extends BaseController {
                 
                 if (!$this->makeDir($path)) {
                     $this->addErrorMessage('Error to create album directory.');
+                    // TODO Delete album from database if directory creation fails
                 }
                 
                 $this->redirect('home');
@@ -50,5 +52,9 @@ class AlbumController extends BaseController {
         }
         
         $this->renderView(__FUNCTION__);
+    }
+
+    public function delete($id) {
+        
     }
 }

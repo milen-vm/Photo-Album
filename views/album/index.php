@@ -13,7 +13,11 @@
                         <div class="caption">
                             <h3><?= htmlspecialchars($album['name']) ?></h3>
                             <p>
-                                <a href="#" class="btn btn-primary">Share</a>
+                                <form action="" method="post">
+                                    <input type="hidden" name="album_id" value="<?= htmlspecialchars($album['id']) ?>" />
+                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                </form>
+                                
                                 <a href="#" class="btn btn-default">Download</a>
                             </p>
                         </div>
@@ -31,3 +35,17 @@
         </li>
     </ul>
 </div>
+<script>
+    $('#logout').on('click', function(ev) {
+        $.ajax({
+            method: 'POST',
+            url: '/Photo-Album/account/logout',
+            success: function(data) {
+                location.reload(); 
+            },
+            error: function() {
+                console.log('Cannot load AJAX data.');
+            }
+        })
+    });
+</script>

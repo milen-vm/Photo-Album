@@ -26,14 +26,27 @@ class HomeController extends BaseController {
         $start = $page * $page_size;
 
         $images = $this->model->getPublicImagesPaginated($start, $page_size);
+        $this->images_data = array();
         
-        $this->images_paths = array();
-        foreach ($images as $image) {
-            $path = '/' . DX_ROOT_PATH . ALBUMS_PATH . '/' . $image['album_id'] .
-                '/' . $image['name'] . '.' . $image['type'];
-            $this->images_paths[] = $path;
+        if (count($images) === 0) {
+            $this->addInfoMessage('No public images. Login to create your on albums.');
+        } else {
+            
+            foreach ($images as $image) {
+                $path = ALBUMS_PATH . '/' . $image['album_id'] .
+                    '/' . $image['name'] . '.' . $image['type'];
+                if (is_readable($path)) {
+                    $data = file_get_contents($path);
+                    $base64 = 'data:image/' . $image['type'] . ';base64,' . base64_encode($data);
+                    $this->images_data[] = $base64;
+                }
+            }
+            
+            if (count($this->images_data) === 0) {
+                $this->addErrorMessage('Public images are broken.');
+            }
         }
-        
+
         $this->renderView();
     }
 }

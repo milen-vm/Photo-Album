@@ -3,10 +3,10 @@
         Public Images
     </legend>
     <div class="row">
-        <?php foreach ($this->images_paths as $path) : ?>
+        <?php foreach ($this->images_data as $data) : ?>
         <div class="col-xs-6 col-md-3">
-            <a href="<?=htmlentities($path)?>" title="Photo" class="thumbnail album-list">
-                <img src="<?=htmlentities($path)?>" alt="photo" />
+            <a href="<?=htmlentities($data)?>" title="Photo" class="thumbnail album-list">
+                <img src="<?=htmlentities($data)?>" alt="photo" />
             </a>
         </div>
         <?php endforeach ?>
