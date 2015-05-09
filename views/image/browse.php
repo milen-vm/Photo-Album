@@ -1,7 +1,8 @@
 <div class="container">
     <legend>
-        Album Name
+        <?=htmlspecialchars($this->album_data['name'])?>
     </legend>
+    <p><?=htmlspecialchars($this->album_data['description'])?></p>
     <div class="row">
         <?php foreach ($this->images_data as $data) : ?>
         <div class="col-xs-6 col-md-3">

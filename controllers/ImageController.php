@@ -36,6 +36,7 @@ class ImageController extends BaseController {
         $this->page_size = $page_size;
         $start = $page * $page_size;
         
+        $this->album_data = $this->model->getAlbumData($album_id);
         $images = $this->model->getImagesPaginated($album_id, $start, $page_size);
         $this->images_data = array();
         

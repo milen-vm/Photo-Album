@@ -12,14 +12,13 @@
                         </a>
                         <div class="caption">
                             <h3><?= htmlspecialchars($album['name']) ?></h3>
-                            <p>
-                                <form action="" method="post">
-                                    <input type="hidden" name="album_id" value="<?= htmlspecialchars($album['id']) ?>" />
-                                    <input type="submit" value="Delete" class="btn btn-danger" />
-                                </form>
-                                
-                                <a href="#" class="btn btn-default">Download</a>
-                            </p>
+                            <form action="album/delete/<?= htmlspecialchars($album['id']) ?>" method="post">
+                                <a id="<?= htmlspecialchars($album['id']) ?>" href="#confirm"
+                                    class="btn btn-danger delete-album" data-toggle="modal">
+                                    Delete
+                                </a>
+                                <!-- <input type="button" name="delete-album" value="Delete" class="btn btn-danger delete-album" /> -->
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -35,17 +34,34 @@
         </li>
     </ul>
 </div>
+<!-- Modal confirm -->
+<div id="confirm" class="modal fade">
+    <div class="modal-dialog modal-width">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to delete this album?</p>
+                <p>This will remove all images in there.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cansel</button>
+                <button id="confirm-delete" type="button" class="btn btn-danger"
+                    data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-    $('#logout').on('click', function(ev) {
-        $.ajax({
-            method: 'POST',
-            url: '/Photo-Album/account/logout',
-            success: function(data) {
-                location.reload(); 
-            },
-            error: function() {
-                console.log('Cannot load AJAX data.');
-            }
-        })
+$(document).ready(function(ev){
+    $('.delete-album').on('click', function(e) {
+        var $form = $(this).closest('form');
+        console.log($form);
+        $('#confirm-delete').on('click', function() {
+            $form.trigger('submit');
+        });
     });
+});
 </script>

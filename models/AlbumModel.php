@@ -58,5 +58,21 @@ class AlbumModel extends BaseModel {
         }
 
         return $album_id;
-    }       
+    }
+    
+    public function isUserOwnsAlbum($album_id, $user_id) {
+        $query_params = array(
+            'table' => 'albums',
+            'columns' => 'user_id', 
+            'where' => 'id = ?');
+        $bind_params = array($album_id);
+        
+        $result = $this->find($query_params, $bind_params);
+        
+        if (isset($result[0]['user_id'])) {
+            return $result[0]['user_id'] == $user_id;
+        }
+        
+        return false;
+    }      
 }

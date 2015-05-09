@@ -31,7 +31,11 @@ class AlbumController extends BaseController {
         $this->albums = $this->model->getAll($this->getUserId(), $start, $page_size);
         var_dump($this->albums);
         $this->renderView();
-    }        
+    }
+    
+    public function get($album_id) {
+        $this->authorize();
+    }      
     
     public function create() {
         $this->authorize();
@@ -52,7 +56,7 @@ class AlbumController extends BaseController {
                     // TODO Delete album from database if directory creation fails
                 }
                 
-                $this->redirect('home');
+                $this->redirect('album');
             } else {
                 $errors = $this->model->getErrors();
                 foreach ($errors as $err) {
@@ -64,7 +68,33 @@ class AlbumController extends BaseController {
         $this->renderView(__FUNCTION__);
     }
 
-    public function delete($id) {
+    public function delete($album_id) {
+        $this->authorize();
+        $is_user_owns_album = $this->model->isUserOwnsAlbum($album_id, $this->getUserId());
+        if (!$is_user_owns_album) {
+            $this->addErrorMessage('Invalid album selected.');
+            $this->redirect('album');
+        } 
         
+        $result = $this->model->delete($album_id);
+        if ($result === 0) {
+            $this->addErrorMessage('Database error. Album os not deleted.');
+            $this->redirect('album');
+        }
+        
+        $dir = ALBUMS_PATH . '/' . $album_id;
+        $files = glob($dir . '/*');
+        foreach($files as $file) {
+            if(is_file($file)) {
+                unlink($file);
+            }
+        }
+        
+        if (!rmdir($dir)) {
+            $this->addErrorMessage('The album does not completely deleted.');
+        }
+        
+        $this->addInfoMessage('The album is successfuly deleted.');
+        $this->redirect('album');
     }
 }

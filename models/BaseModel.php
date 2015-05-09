@@ -20,6 +20,16 @@ abstract class BaseModel {
         $db = Database::get_instance();
         $this->db = $db::get_db();
     }
+    
+    public function delete($id) {
+        $query = "DELETE FROM {$this->table} WHERE id = ?";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', intval($id));
+        $stmt->execute();
+
+        return $stmt->affected_rows;
+    }
 
     public function add($pairs) {
         $columns = array_keys($pairs);
@@ -63,7 +73,7 @@ abstract class BaseModel {
             array_unshift($bind_params, $types);
         }
         
-        $query = $this->buildQuery($query_params);   
+        $query = $this->buildQuery($query_params);
         $stmt = $this->db->prepare($query);
         
         if (count($bind_params) > 0) {
