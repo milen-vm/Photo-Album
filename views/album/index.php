@@ -17,7 +17,7 @@
                                     class="btn btn-danger delete-album" data-toggle="modal">
                                     Delete
                                 </a>
-                                <!-- <input type="button" name="delete-album" value="Delete" class="btn btn-danger delete-album" /> -->
+                                <input type="hidden" name="form_token" value="<?=$_SESSION['form_token']?>" />
                             </form>
                         </div>
                     </div>

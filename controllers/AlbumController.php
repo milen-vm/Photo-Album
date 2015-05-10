@@ -10,6 +10,10 @@ class AlbumController extends BaseController {
     
     public function index($page = 0, $page_size = ALBUMS_PAGE_SIZE) {
         $this->authorize();
+        if (!$this->is_post) {
+            $_SESSION['form_token'] = hash('sha256', uniqid());
+        }
+        
         if ($page < 0) {
             $page = 0;
         }
@@ -29,7 +33,6 @@ class AlbumController extends BaseController {
         $start = $page * $page_size;
         
         $this->albums = $this->model->getAll($this->getUserId(), $start, $page_size);
-        var_dump($this->albums);
         $this->renderView();
     }
     
@@ -39,7 +42,15 @@ class AlbumController extends BaseController {
     
     public function create() {
         $this->authorize();
+        if (!$this->is_post) {
+            $_SESSION['form_token'] = hash('sha256', uniqid());
+        }
+        
         if ($this->is_post) {
+            if (!isset($_POST['form_token']) || $_POST['form_token'] != $_SESSION['form_token']) {
+                die('Aplication error.');
+            }
+            
             $name = trim($_POST['name']);
             $description = trim($_POST['description']);
             $is_private = isset($_POST['is_private']) ? $_POST['is_private'] : '';
@@ -70,6 +81,10 @@ class AlbumController extends BaseController {
 
     public function delete($album_id) {
         $this->authorize();
+        if (!isset($_POST['form_token']) || $_POST['form_token'] != $_SESSION['form_token']) {
+            die('Aplication error.');
+        }
+        
         $is_user_owns_album = $this->model->isUserOwnsAlbum($album_id, $this->getUserId());
         if (!$is_user_owns_album) {
             $this->addErrorMessage('Invalid album selected.');

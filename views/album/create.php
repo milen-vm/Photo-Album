@@ -39,6 +39,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label">Submit</label>
                 <div class="col-md-4">
+                    <input type="hidden" name="form_token" value="<?=$_SESSION['form_token']?>" />
                     <input id="register" type="submit" value="Create" name="submit"
                     class="btn btn-primary" />
                 </div>

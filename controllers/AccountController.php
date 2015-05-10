@@ -17,7 +17,15 @@ class AccountController extends BaseController {
             $this->redirect('home');
         }
         
+        if (!$this->is_post) {
+            $_SESSION['form_token'] = hash('sha256', uniqid());
+        }
+        
         if ($this->is_post) {
+            if (!isset($_POST['form_token']) || $_POST['form_token'] != $_SESSION['form_token']) {
+                die('Aplication error.');
+            }
+            
             $user_name = trim($_POST['user_name']);
             $first_name = trim($_POST['first_name']);
             $last_name = trim($_POST['last_name']);
@@ -56,7 +64,15 @@ class AccountController extends BaseController {
             $this->redirect('home');
         }
         
+        if (!$this->is_post) {
+            $_SESSION['form_token'] = hash('sha256', uniqid());
+        }
+        
         if($this->is_post) {
+            if (!isset($_POST['form_token']) || $_POST['form_token'] != $_SESSION['form_token']) {
+                die('Aplication error.');
+            }
+            
             $user_name = trim($_POST['user_name']);
             $password = trim($_POST['password']);
             $login_result = $this->model->login($user_name, $password);
