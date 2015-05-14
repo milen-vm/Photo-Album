@@ -15,6 +15,7 @@ class AlbumModel extends BaseModel {
         $query_params = array(
             'columns' => 'id, name, description',
             'where' => 'user_id = ?',
+            'orderby' => 'create_date DESC',
             'limit' => '?, ?'
         );
         $bind_params = array($user_id, $start, $page_size);

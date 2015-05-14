@@ -13,10 +13,12 @@
     </div>
     <ul class="pager">
         <li>
-            <a href="/Photo-Album/home/index/<?=htmlspecialchars($this->page - 1)?>/<?=htmlspecialchars($this->page_size)?>">Previous</a>             
+            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page - 1) .
+                '/' . htmlspecialchars($this->page_size);?>">Prev</a>             
         </li>
         <li>
-            <a href="/Photo-Album/home/index/<?=htmlspecialchars($this->page + 1)?>/<?=htmlspecialchars($this->page_size)?>">Next</a>               
+            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page + 1) .
+                '/' . htmlspecialchars($this->page_size);?>">Next</a>               
         </li>
     </ul>
 </div>

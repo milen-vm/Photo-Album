@@ -5,7 +5,7 @@ define('DEFAULT_LAYOUT', 'default');
 
 define('SERVER_NAME', 'localhost');
 define('USER_NAME', 'root');
-define('SERVER_PASSWORD', 'my3595936sql');
+define('SERVER_PASSWORD', '');
 define('DATABASE_NAME', 'photo_album');
 
 define('USER_NAME_MIN_LENGTH', 3);
@@ -14,6 +14,6 @@ define('MIN_BIRTH_YEAR', 1920);
 define('PASSWORD_MIN_LENGTH', 3);
 
 define('ALBUMS_PATH', 'albums');
-define('ALBUMS_PAGE_SIZE', 9);
+define('ALBUMS_PAGE_SIZE', 3);
 define('IMAGES_PAGE_SIZE', 12);
 define('MAX_IMAGE_FILE_SIZE', 1024000);

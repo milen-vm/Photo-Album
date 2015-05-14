@@ -14,14 +14,16 @@
     </div>
     <ul class="pager">
         <li>
-            <a href="/Photo-Album/image/browse/<?=htmlspecialchars($this->album_id)?>/<?=htmlspecialchars($this->page - 1)?>/<?=htmlspecialchars($this->page_size)?>">Previous</a>             
+            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page - 1) .
+                '/' . htmlspecialchars($this->page_size);?>">Prev</a>             
         </li>
         <li>
-            <a href="/Photo-Album/image/browse/<?=htmlspecialchars($this->album_id)?>/<?=htmlspecialchars($this->page + 1)?>/<?=htmlspecialchars($this->page_size)?>">Next</a>               
+            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page + 1) .
+                '/' . htmlspecialchars($this->page_size);?>">Next</a>               
         </li>
     </ul>
     <!-- Upload photo form -->
-    <form action="/Photo-Album/image/upload" method="post"
+    <form action="<?=ROOT_URL?>image/upload" method="post"
     enctype="multipart/form-data" class="form-horizontal">
         <!-- Form Name -->
         <legend>

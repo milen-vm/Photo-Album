@@ -36,8 +36,8 @@ class AlbumController extends BaseController {
         $this->renderView();
     }
     
-    public function get($album_id) {
-        $this->authorize();
+    public function publicalbums() {
+        
     }      
     
     public function create() {
@@ -110,6 +110,7 @@ class AlbumController extends BaseController {
         }
         
         $this->addInfoMessage('The album is successfuly deleted.');
-        $this->redirect('album');
+        // TODO Set current page number
+        $this->redirect('album', 'index', array(0, ALBUMS_PAGE_SIZE));
     }
 }

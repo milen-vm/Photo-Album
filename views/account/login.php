@@ -1,5 +1,5 @@
 <div class="container">
-    <form action="/Photo-Album/account/login" method="post" class="form-horizontal">
+    <form action="<?=ROOT_URL?>account/login" method="post" class="form-horizontal">
         <fieldset>
             <!-- Form Name -->
             <legend>

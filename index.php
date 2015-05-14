@@ -4,6 +4,7 @@ require_once 'includes/config.php';
 
 define('DX_ROOT_DIR', dirname(__FILE__) . '/');
 define('DX_ROOT_PATH', basename(dirname(__FILE__)) . '/');      // contains 'Photo-album/'
+define( 'ROOT_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/' . DX_ROOT_PATH );   // http://localhost/Photo-Album/
 
 session_start();
 $app = Application::getInstance();

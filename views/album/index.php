@@ -7,14 +7,15 @@
             <?php foreach ($this->albums as $album) : ?>
                 <div class="col-sm-6 col-md-3">
                     <div class="thumbnail album-title">
-                        <a href="/Photo-Album/image/browse/<?= htmlspecialchars($album['id']) ?>" title="Browse">
-                            <img src="/Photo-Album/content/images/photo-album.gif" alt="Title photo">
+                        <a href="<?php echo ROOT_URL . 'image/browse/' . htmlspecialchars($album['id']);?>"
+                            title="Browse">
+                            <img src="<?=ROOT_URL?>content/images/photo-album.gif" alt="Title photo">
                         </a>
                         <div class="caption">
                             <h3><?= htmlspecialchars($album['name']) ?></h3>
-                            <form action="album/delete/<?= htmlspecialchars($album['id']) ?>" method="post">
-                                <a id="<?= htmlspecialchars($album['id']) ?>" href="#confirm"
-                                    class="btn btn-danger delete-album" data-toggle="modal">
+                            <form action="<?php echo ROOT_URL . 'album/delete/' . htmlspecialchars($album['id']);?>"
+                                method="post">
+                                <a href="#confirm" class="btn btn-danger delete-album" data-toggle="modal">
                                     Delete
                                 </a>
                                 <input type="hidden" name="form_token" value="<?=$_SESSION['form_token']?>" />
@@ -27,10 +28,12 @@
     </div>
     <ul class="pager">
         <li>
-            <a href="/Photo-Album/album/index/<?=htmlspecialchars($this->page - 1)?>/<?=htmlspecialchars($this->page_size)?>">Previous</a>             
+            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page - 1) .
+                '/' . htmlspecialchars($this->page_size);?>">Prev</a>             
         </li>
         <li>
-            <a href="/Photo-Album/album/index/<?=htmlspecialchars($this->page + 1)?>/<?=htmlspecialchars($this->page_size)?>">Next</a>               
+            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page + 1) .
+                '/' . htmlspecialchars($this->page_size);?>">Next</a>               
         </li>
     </ul>
 </div>
