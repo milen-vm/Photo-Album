@@ -11,14 +11,5 @@
         </div>
         <?php endforeach ?>
     </div>
-    <ul class="pager">
-        <li>
-            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page - 1) .
-                '/' . htmlspecialchars($this->page_size);?>">Prev</a>             
-        </li>
-        <li>
-            <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page + 1) .
-                '/' . htmlspecialchars($this->page_size);?>">Next</a>               
-        </li>
-    </ul>
+    <?php $this->pagination->includePangination(); ?>
 </div>

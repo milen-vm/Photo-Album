@@ -15,7 +15,7 @@ class AlbumController extends BaseController {
         }
 
         $albums_count = $this->model->getCount($this->getUserId());
-        $this->pagination = new Pagination($albums_count);
+        $this->pagination = new Pagination($albums_count, ALBUMS_PAGE_SIZE);
         
         $start = $this->pagination->getOffset();
         $this->albums = $this->model->getAll($this->getUserId(), $start, ALBUMS_PAGE_SIZE);
@@ -79,7 +79,7 @@ class AlbumController extends BaseController {
         
         $result = $this->model->delete($album_id);
         if ($result === 0) {
-            $this->addErrorMessage('Database error. Album os not deleted.');
+            $this->addErrorMessage('Database error. Album is not deleted.');
             $this->redirect('album');
         }
         

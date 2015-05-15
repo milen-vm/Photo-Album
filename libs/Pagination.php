@@ -2,11 +2,13 @@
 
 class Pagination {
     private $total_items;
+    private $page_size;
     private $current_page;
     private $total_pages;
     
-    public function __construct($total_items) {
+    public function __construct($total_items, $page_size) {
         $this->setTotalItems($total_items);
+        $this->setPageSize($page_size);
         $this->setTotalPages();
         $this->setCurrentPage();
     }
@@ -29,16 +31,26 @@ class Pagination {
         }
     }
     
-    // public function getTotalPages() {
-        // return 
-    // }
-    
-    private function setTotalPages() {
-        $this->total_pages = ceil($this->total_items / ALBUMS_PAGE_SIZE);
+    private function setPageSize($page_size) {
+        if (is_numeric($page_size)) {
+            $page_size = $page_size + 0;
+            
+            if ($page_size < 1) {
+                die('Page size cannot be zero or negative');
+            }
+            
+            if (!is_int($page_size)) {
+                die('Page size must be an integer.');
+            }
+            
+             $this->page_size = $page_size;
+        } else {
+            die('Page size must be a number');
+        }
     }
     
-    public function getCurrentPage() {
-        return $this->current_page;
+    private function setTotalPages() {
+        $this->total_pages = ceil($this->total_items / $this->page_size);
     }
     
     private function setCurrentPage() {
@@ -58,11 +70,11 @@ class Pagination {
     }
     
     public function getOffset() {
-        if ($this->current_page == 0) {
+        if ($this->current_page < 1) {
             return 0;
         }
         
-        return ($this->current_page - 1) * ALBUMS_PAGE_SIZE;
+        return ($this->current_page - 1) * $this->page_size;
     }
     
     public function includePangination() {
@@ -71,8 +83,6 @@ class Pagination {
         $this->prev_page_url = $main_url . '?page=' . ($this->current_page - 1);
         $this->next_page_url = $main_url . '?page=' . ($this->current_page + 1);
         $this->last_page_url = $main_url . '?page=' . $this->total_pages;
-        $this->last_page = $this->total_pages;
-        $this->curr_page = $this->current_page;
         
         return include_once 'Pager.php';
     }

@@ -22,22 +22,12 @@ class ImageController extends BaseController {
             $this->redirect('album');
         }
         
-        $album_image_count = $this->model->getCount($album_id);
-        $total_pages = ($album_image_count + $page_size - 1) / $page_size;
-        if (($page + 1) > $total_pages) {
-            $page -= 1;
-        }
-        
-        if ($page < 0) {
-            $page = 0;
-        }
-
-        $this->page = $page;
-        $this->page_size = $page_size;
-        $start = $page * $page_size;
+        $album_images_count = $this->model->getCount($album_id);
+        $this->pagination = new Pagination($album_images_count, IMAGES_PAGE_SIZE);
         
         $this->album_data = $this->model->getAlbumData($album_id);
-        $images = $this->model->getImagesPaginated($album_id, $start, $page_size);
+        $start = $this->pagination->getOffset();
+        $images = $this->model->getImagesPaginated($album_id, $start, IMAGES_PAGE_SIZE);
         $this->images_data = array();
         
         if (count($images) === 0) {

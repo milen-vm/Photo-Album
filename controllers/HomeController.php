@@ -8,24 +8,13 @@ class HomeController extends BaseController {
         $this->model = new HomeModel();
     }
     
-    public function index($page = 0, $page_size = IMAGES_PAGE_SIZE) {
+    public function index() {
         
         $public_images_count = $this->model->getPublicImagesCount();
-
-        $total_pages = ($public_images_count + $page_size - 1) / $page_size;
-        if (($page + 1) > $total_pages) {
-            $page -= 1;
-        }
+        $this->pagination = new Pagination($public_images_count, IMAGES_PAGE_SIZE);
         
-        if ($page < 0) {
-            $page = 0;
-        }
-
-        $this->page = $page;
-        $this->page_size = $page_size;
-        $start = $page * $page_size;
-
-        $images = $this->model->getPublicImagesPaginated($start, $page_size);
+        $start = $this->pagination->getOffset();
+        $images = $this->model->getPublicImagesPaginated($start, IMAGES_PAGE_SIZE);
         $this->images_data = array();
         
         if (count($images) === 0) {

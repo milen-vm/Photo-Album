@@ -1,5 +1,5 @@
 <ul class="pager">
-    <?php if ($this->curr_page == 1) :?>
+    <?php if ($this->current_page == 1) :?>
     <li class="disabled">
         <a>First</a>
     </li>
@@ -15,9 +15,9 @@
     </li>
     <?php endif ?>
     <li>
-        Page <?=$this->curr_page?> of <?=$this->last_page?>
+        Page <?=$this->current_page?> of <?=$this->total_pages?>
     </li>
-    <?php if ($this->curr_page == $this->last_page) :?>
+    <?php if ($this->current_page == $this->total_pages) :?>
     <li class="disabled">
         <a>Next</a>
     </li>
