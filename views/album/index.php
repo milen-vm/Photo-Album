@@ -26,7 +26,8 @@
             <?php endforeach ?>
         <?php endif ?>
     </div>
-    <ul class="pager">
+    <?php $this->pagination->includePangination(); ?>
+    <!-- <ul class="pager">
         <li>
             <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page - 1) .
                 '/' . htmlspecialchars($this->page_size);?>">Prev</a>             
@@ -35,7 +36,7 @@
             <a href="<?php echo ROOT_URL . 'album/index/' . htmlspecialchars($this->page + 1) .
                 '/' . htmlspecialchars($this->page_size);?>">Next</a>               
         </li>
-    </ul>
+    </ul> -->
 </div>
 <!-- Modal confirm -->
 <div id="confirm" class="modal fade">

@@ -8,31 +8,17 @@ class AlbumController extends BaseController {
         $this->model = new AlbumModel();
 	}
     
-    public function index($page = 0, $page_size = ALBUMS_PAGE_SIZE) {
+    public function index() {
         $this->authorize();
         if (!$this->is_post) {
             $_SESSION['form_token'] = hash('sha256', uniqid());
         }
-        
-        if ($page < 0) {
-            $page = 0;
-        }
-        
-        $albums_count = $this->model->getCount($this->getUserId());
-        $total_pages = ($albums_count + $page_size - 1) / $page_size;
-        if (($page + 1) > $total_pages) {
-            $page -= 1;
-        }
-        
-        if ($page < 0) {
-            $page = 0;
-        }
 
-        $this->page = $page;
-        $this->page_size = $page_size;
-        $start = $page * $page_size;
+        $albums_count = $this->model->getCount($this->getUserId());
+        $this->pagination = new Pagination($albums_count);
         
-        $this->albums = $this->model->getAll($this->getUserId(), $start, $page_size);
+        $start = $this->pagination->getOffset();
+        $this->albums = $this->model->getAll($this->getUserId(), $start, ALBUMS_PAGE_SIZE);
         $this->renderView();
     }
     
@@ -111,6 +97,6 @@ class AlbumController extends BaseController {
         
         $this->addInfoMessage('The album is successfuly deleted.');
         // TODO Set current page number
-        $this->redirect('album', 'index', array(0, ALBUMS_PAGE_SIZE));
+        $this->redirect('album', 'index');
     }
 }
