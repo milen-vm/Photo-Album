@@ -65,7 +65,8 @@ class ImageController extends BaseController {
         $album_id = $_SESSION['album_id'];
         unset($_SESSION['album_id']);
 
-        $full_file_name = basename($_FILES['photo']['name']);             
+        $full_file_name = basename($_FILES['photo']['name']);
+               
         if (isset($_POST['submit']) && $full_file_name != '') {
            // TODO Move check for is user owns album here
             $image_id = $this->model->addImage($album_id, $this->getUserId());

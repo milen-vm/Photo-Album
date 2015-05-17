@@ -17,8 +17,8 @@ class Pagination {
         if (is_numeric($total_items)) {
             $total_items =  $total_items + 0;
             
-            if ($total_items < 1) {
-                die('Total items count cannot be zero or negative');
+            if ($total_items < 0) {
+                die('Total items count cannot be negative');
             }
             
             if (!is_int($total_items)) {
@@ -50,7 +50,11 @@ class Pagination {
     }
     
     private function setTotalPages() {
-        $this->total_pages = ceil($this->total_items / $this->page_size);
+        if ($this->total_items === 0) {
+            $this->total_pages = 1;
+        } else {
+            $this->total_pages = ceil($this->total_items / $this->page_size);
+        }
     }
     
     private function setCurrentPage() {

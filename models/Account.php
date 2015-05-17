@@ -49,7 +49,8 @@ class Account {
     }
     
     public function getPasswordHash() {
-        return password_hash($this->password, PASSWORD_DEFAULT);
+        $options = array('cost' => PASSWORD_CRYPT_COST);
+        return password_hash($this->password, PASSWORD_DEFAULT, $options);
     }
     
     public function getErrors() {

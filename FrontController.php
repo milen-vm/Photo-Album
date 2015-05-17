@@ -1,10 +1,6 @@
 <?php
 
 class FrontController {
-    
-    // const DEFAULT_CONTROLLER = "home";
-    // const DEFAULT_ACTION = "index";
-    
     public function parse() {
         $controller_name = DEFAULT_CONTROLLER;
         $action_name = DEFAULT_ACTION;
