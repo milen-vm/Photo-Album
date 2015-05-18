@@ -46,11 +46,15 @@ class AlbumController extends BaseController {
             
             if ($create_result) {
                 $this->addInfoMessage('Album successfully created.');
-                $path = ALBUMS_PATH . DIRECTORY_SEPARATOR . $create_result;
+                $path = ALBUMS_PATH . D_S . $create_result;
                 
                 if (!$this->makeDir($path)) {
                     $this->addErrorMessage('Error to create album directory.');
                     // TODO Delete album from database if directory creation fails
+                }
+                
+                if (!$this->makeDir($path . D_S . THUMBS_DIR_NAME)) {
+                    $this->addErrorMessage('Error to create thumbnail directory.');
                 }
                 
                 $this->redirect('album');

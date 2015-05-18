@@ -2,66 +2,71 @@
 
 class Image {
     private $name;
+    private $new_name;
     private $type;
     private $size;
     private $errors = array();
 
-    public function __construct() {
-        $full_file_name = basename($_FILES['photo']['name']);
-        $this -> name = basename($_FILES['photo']['name']);
-        $this -> type = pathinfo($full_file_name, PATHINFO_EXTENSION);
-        $this -> size = $_FILES['photo']['size'];
+    public function __construct($album_id) {
+        $this->name = basename($_FILES['photo']['name']);
+        $this->type = strtolower(pathinfo(basename($_FILES['photo']['name']),
+            PATHINFO_EXTENSION));
+        $this->size = $_FILES['photo']['size'];
+        $this->setNewName($album_id);
     }
 
     public function getName() {
-        return $this -> name;
+        return $this->name;
     }
 
     public function getType() {
-        return $this -> type;
+        return $this->type;
     }
 
     public function getSize() {
-        return $this -> size;
+        return $this->size;
     }
 
     public function getErrors() {
-        return $this -> errors;
+        return $this->errors;
     }
 
-    public function getNewName($album_id) {
-        $new_file_name = uniqid('img_');
-        $target_path = ALBUMS_PATH . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR;
+    public function getNewName() {
+        return $this->new_name;
+    }
+    
+    private function setNewName($album_id) {
+        $new_file_name = uniqid(IMAGE_NAME_PREFIX);
+        $target_path = ALBUMS_PATH . D_S . $album_id . D_S;
         // TODO Check is $target_path exist
-        while (file_exists($target_path . $new_file_name . '.' . $this -> getType())) {
-            $new_file_name = uniqid('img_');
+        while (file_exists($target_path . $new_file_name . '.' . $this->getType())) {
+            $new_file_name = uniqid(IMAGE_NAME_PREFIX);
         }
-
-        return $new_file_name;
+        
+        $this->new_name = $new_file_name;
     }
 
     public function isValid() {
-        $this -> validateImage();
+        $this->validateImage();
 
-        return count($this -> errors) === 0;
+        return count($this->errors) === 0;
     }
 
     private function validateImage() {
         $check = getimagesize($_FILES['photo']['tmp_name']);
         if ($check === false) {
-            $this -> errors[] = 'File is not a image.';
+            $this->errors[] = 'File is not a image.';
             return;
         }
 
         if ($_FILES['photo']['size'] > MAX_IMAGE_FILE_SIZE) {
-            $this -> errors[] = 'Max image file size is ' . MAX_IMAGE_FILE_SIZE . ' b.';
+            $this->errors[] = 'Max image file size is ' . MAX_IMAGE_FILE_SIZE . ' b.';
             return;
         }
 
-        $full_file_name = basename($_FILES['photo']['name']);
-        $file_type = pathinfo($full_file_name, PATHINFO_EXTENSION);
+        $file_type = $this->type;
         if ($file_type != 'jpg' && $file_type != 'png' && $file_type != 'jpeg' && $file_type != 'gif') {
-            $this -> errors[] = 'Aloed image formats are only JPG, JPEG, PNG & GIF.';
+            $this->errors[] = 'Aloed image formats are only JPG, JPEG, PNG & GIF.';
         }
     }
 }

@@ -1,4 +1,6 @@
 <?php
+define('D_S', DIRECTORY_SEPARATOR);
+
 define('DEFAULT_CONTROLLER', 'home');
 define('DEFAULT_ACTION', 'index');
 define('DEFAULT_LAYOUT', 'default');
@@ -14,8 +16,12 @@ define('MIN_BIRTH_YEAR', 1920);
 define('PASSWORD_MIN_LENGTH', 3);
 
 define('ALBUMS_PATH', 'albums');
-define('ALBUMS_PAGE_SIZE', 12);
+define('IMAGE_NAME_PREFIX', 'img_');
+define('THUMBS_DIR_NAME', 'thumbs');
+
+define('ALBUMS_PAGE_SIZE', 2);
 define('IMAGES_PAGE_SIZE', 2);
 define('MAX_IMAGE_FILE_SIZE', 1024000);
+define('THUMBNAIL_WITH_SIZE', 250);
 
 define('PASSWORD_CRYPT_COST', 10);
