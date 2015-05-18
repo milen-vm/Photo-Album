@@ -5,6 +5,7 @@ class Image {
     private $new_name;
     private $type;
     private $size;
+    private $path;
     private $errors = array();
 
     public function __construct($album_id) {
@@ -12,11 +13,16 @@ class Image {
         $this->type = strtolower(pathinfo(basename($_FILES['photo']['name']),
             PATHINFO_EXTENSION));
         $this->size = $_FILES['photo']['size'];
+        $this->setPath($album_id);
         $this->setNewName($album_id);
     }
 
     public function getName() {
         return $this->name;
+    }
+    
+    public function getNewName() {
+        return $this->new_name;
     }
 
     public function getType() {
@@ -26,25 +32,38 @@ class Image {
     public function getSize() {
         return $this->size;
     }
-
-    public function getErrors() {
-        return $this->errors;
+    
+    public function getPath() {
+        return $this->path;
     }
-
-    public function getNewName() {
-        return $this->new_name;
+    
+    private function setPath($album_id) {
+        $this->path = ALBUMS_PATH . D_S . $album_id . D_S;
     }
     
     private function setNewName($album_id) {
         $new_file_name = uniqid(IMAGE_NAME_PREFIX);
-        $target_path = ALBUMS_PATH . D_S . $album_id . D_S;
         // TODO Check is $target_path exist
-        while (file_exists($target_path . $new_file_name . '.' . $this->getType())) {
+        while (file_exists($this->path . $new_file_name . '.' . $this->type)) {
             $new_file_name = uniqid(IMAGE_NAME_PREFIX);
         }
         
         $this->new_name = $new_file_name;
     }
+    
+    public function getFullPath() {
+        $full_path = $this->path . $this->getFullFilename();
+        return $full_path;
+    }
+    
+    public function getFullFilename() {
+        $full_filename = $this->new_name . '.' . $this->type;
+        return $full_filename;
+    }
+    
+    public function getErrors() {
+        return $this->errors;
+    } 
 
     public function isValid() {
         $this->validateImage();

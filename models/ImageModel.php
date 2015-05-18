@@ -65,11 +65,16 @@ class ImageModel extends BaseModel {
                     return false;
                 }
                 
-                $upload_result = $this->uploadImage($album_id, $image->getNewName(),
-                    $image->getType());     // save image to hard drive
-                $this->createThumbnail($album_id, $image->getNewName(),
-                    $image->getType(), THUMBNAIL_WITH_SIZE);
+                $upload_result = $this->uploadImage($image->getFullPath());     // save image to hard drive
+                
+                
                 if ($upload_result) {
+                    // TODO Add try catch block to createThumbnail
+                    $save_path = $image->getPath() . THUMBS_DIR_NAME . D_S .
+                        $image->getFullFilename();
+                    $this->createThumbnail($image->getFullPath(), $save_path,
+                        THUMBNAIL_WITH_SIZE, 0);
+                        
                     return $image_id;
                 }
                 // TODO Add function to delete image from database if upload fails
@@ -101,11 +106,8 @@ class ImageModel extends BaseModel {
         return false;
     }
     
-    private function uploadImage($album_id, $file_name, $file_type) {        
-        $target_path = ALBUMS_PATH . D_S . $album_id .
-             D_S . $file_name . '.' . $file_type;
-
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_path)) {
+    private function uploadImage($path) {
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $path)) {
             
             return true;
         }
@@ -113,54 +115,9 @@ class ImageModel extends BaseModel {
         return false;
     }
     
-    private function createThumbnail($album_id, $file_name, $file_type, $new_width) {
-        $target_path = ALBUMS_PATH . D_S . $album_id .
-            D_S . $file_name . '.' . $file_type;
-        if (!file_exists($target_path)) {
-            die('Cannot create thumbnail. Source image do not exist.');
-        }
-
-        list($width, $height) = getimagesize($target_path);
-        $mime_type = end(getimagesize($target_path));
-
-        $ratio = $width / $height;
-        $new_heigth = (int)round($new_width / $ratio);
-        
-        switch (strtolower($mime_type)) {
-            case 'image/png':
-                $image = imagecreatefrompng($target_path);
-                break;
-            case 'image/jpeg':
-                $image = imagecreatefromjpeg($target_path);
-                break;
-            case 'image/gif':
-                $image = imagecreatefromgif($target_path);
-                break;
-            default:
-                die('Invalid image file type.');
-                break;
-        }
-        
-        $thumbnail = imagecreatetruecolor($new_width, $new_heigth);
-        imagecopyresized($thumbnail, $image, 0, 0, 0, 0,
-            $new_width, $new_heigth, $width, $height);
-        
-        $save_path = ALBUMS_PATH . D_S . $album_id . D_S .
-            THUMBS_DIR_NAME . D_S . $file_name . '.' . $file_type;
-            
-        imagejpeg($thumbnail, $save_path);
-        imagedestroy($thumbnail);
+    private function createThumbnail($source_path, $save_path, $width, $heigth, $resize_opt = 'default') {
+        $resize = new ResizeImage($source_path);
+        $resize->resizeTo($width, $heigth, $resize_opt);
+        $resize->saveImage($save_path, 75);
     }
-
-    // private function createThumbnail($album_id, $file_name, $file_type) {
-        // $target_path = ALBUMS_PATH . D_S . $album_id . D_S .
-            // 'thumbs' . D_S . $file_name . '.' . $file_type;
-//             
-        // $thumb = new Imagick();
-        // $thumb->readImage($_FILES['photo']['tmp_name']);
-        // $thumb->resizeImage(THUMBNAIL_WITH_SIZE, 0, Imagick::FILTER_LANCZOS, 1);
-        // $thumb->writeImage($target_path);
-        // $thumb->clear();
-        // $thumb->destroy(); 
-    // }
 }
