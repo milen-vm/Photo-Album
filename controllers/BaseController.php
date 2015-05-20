@@ -114,7 +114,33 @@ abstract class BaseController {
             array('text' => $msg, 'type' => $type));
     }
     
-    public function makeDir($path, $mode = 0777) {
-         return is_dir($path) || mkdir($path, $mode, true);
-    }   
+    public function makeBase64($images, $main_path) {
+        $read_errors = 0;
+        $images_data = array();
+        foreach ($images as $image) {
+            if (isset($image['album_id'])) {
+                $main_path .= $image['album_id'] . D_S;
+            }
+
+            $path = $main_path . $image['name'] . '.' . $image['type'];
+            if (is_readable($path)) {
+                // header('Content-type: image/jpeg');
+                // $data = readfile($path);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $image['type'] . ';base64,' . base64_encode($data);
+                $id = $image['id'];
+                $images_data[$id] = $base64;
+            } else {
+                ++$read_errors;
+            }
+        }
+        
+        if ($read_errors > 0) {
+            $this->addErrorMessage("Something goes wrong. There is $read_errors broken images.");
+        }
+        // TODO Do something if $images_data is empty
+        return $images_data;
+    }
+    
+    
 }

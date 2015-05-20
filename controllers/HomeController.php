@@ -20,16 +20,8 @@ class HomeController extends BaseController {
         if (count($images) === 0) {
             $this->addInfoMessage('No public images. Login to create your on albums.');
         } else {
-            
-            foreach ($images as $image) {
-                $path = ALBUMS_PATH . '/' . $image['album_id'] .
-                    '/' . $image['name'] . '.' . $image['type'];
-                if (is_readable($path)) {
-                    $data = file_get_contents($path);
-                    $base64 = 'data:image/' . $image['type'] . ';base64,' . base64_encode($data);
-                    $this->images_data[] = $base64;
-                }
-            }
+            $main_path = ALBUMS_PATH . D_S;
+            $this->images_data = $this->makeBase64($images, $main_path);
             
             if (count($this->images_data) === 0) {
                 $this->addErrorMessage('Public images are broken.');

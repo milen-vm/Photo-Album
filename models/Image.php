@@ -1,24 +1,24 @@
 <?php
 
 class Image {
-    private $name;
+    private $tmp_name;
     private $new_name;
     private $type;
     private $size;
     private $path;
     private $errors = array();
 
-    public function __construct($album_id) {
-        $this->name = basename($_FILES['photo']['name']);
-        $this->type = strtolower(pathinfo(basename($_FILES['photo']['name']),
+    public function __construct($image, $album_id) {
+        $this->tmp_name = $image['tmp_name'];
+        $this->type = strtolower(pathinfo(basename($image['name']),
             PATHINFO_EXTENSION));
-        $this->size = $_FILES['photo']['size'];
+        $this->size = $image['size'];
         $this->setPath($album_id);
         $this->setNewName($album_id);
     }
 
-    public function getName() {
-        return $this->name;
+    public function getTmpName() {
+        return $this->tmp_name;
     }
     
     public function getNewName() {
@@ -72,13 +72,13 @@ class Image {
     }
 
     private function validateImage() {
-        $check = getimagesize($_FILES['photo']['tmp_name']);
+        $check = getimagesize($this->tmp_name);
         if ($check === false) {
             $this->errors[] = 'File is not a image.';
             return;
         }
 
-        if ($_FILES['photo']['size'] > MAX_IMAGE_FILE_SIZE) {
+        if ($this->size > MAX_IMAGE_FILE_SIZE) {
             $this->errors[] = 'Max image file size is ' . MAX_IMAGE_FILE_SIZE . ' b.';
             return;
         }

@@ -18,9 +18,10 @@ define('PASSWORD_MIN_LENGTH', 3);
 define('ALBUMS_PATH', 'albums');
 define('IMAGE_NAME_PREFIX', 'img_');
 define('THUMBS_DIR_NAME', 'thumbs');
+define('THUMBS_QUALITY_RATE', 75);
 
-define('ALBUMS_PAGE_SIZE', 2);
-define('IMAGES_PAGE_SIZE', 2);
+define('ALBUMS_PAGE_SIZE', 12);
+define('IMAGES_PAGE_SIZE', 12);
 define('MAX_IMAGE_FILE_SIZE', 1024000);
 define('THUMBNAIL_WITH_SIZE', 250);
 

@@ -12,7 +12,7 @@ class ImageModel extends BaseModel {
     }
     public function getImagesPaginated($album_id, $page, $page_size) {
         $query_params = array(
-            'columns' => 'name, type',
+            'columns' => 'id, name, type',
             'where' => 'album_id = ?',
             'orderby' => 'create_date DESC',
             'limit' => '?, ?'
@@ -46,16 +46,16 @@ class ImageModel extends BaseModel {
         return $result[0];
     }
     
-    public function addImage($album_id, $user_id) {
-        $image = new Image($album_id);
-        if ($image->isValid()) {
+    public function addImage($image, $album_id, $user_id) {
+        $img = new Image($image, $album_id);
+        if ($img->isValid()) {
 
             if ($this->isUserOwnsAlbum($album_id, $user_id)) {
                 
                 $pairs = array(
-                    'name' => $image->getNewName(),
-                    'type' => $image->getType(),
-                    'size' => $image->getSize(),
+                    'name' => $img->getNewName(),
+                    'type' => $img->getType(),
+                    'size' => $img->getSize(),
                     'album_id' => $album_id
                 );
                 
@@ -64,16 +64,13 @@ class ImageModel extends BaseModel {
                     $this->errors[] = 'Database error. Can not upload image.';
                     return false;
                 }
-                
-                $upload_result = $this->uploadImage($image->getFullPath());     // save image to hard drive
-                
-                
-                if ($upload_result) {
+
+                if (move_uploaded_file($img->getTmpName(), $img->getFullPath())) {
                     // TODO Add try catch block to createThumbnail
-                    $save_path = $image->getPath() . THUMBS_DIR_NAME . D_S .
-                        $image->getFullFilename();
-                    $this->createThumbnail($image->getFullPath(), $save_path,
-                        THUMBNAIL_WITH_SIZE, 0);
+                    $save_path = $img->getPath() . THUMBS_DIR_NAME . D_S .
+                        $img->getFullFilename();
+                    $this->createThumbnail($img->getFullPath(), $save_path,
+                        THUMBNAIL_WITH_SIZE, THUMBNAIL_WITH_SIZE, THUMBS_QUALITY_RATE);
                         
                     return $image_id;
                 }
@@ -86,7 +83,7 @@ class ImageModel extends BaseModel {
             return false;
         }
 
-        $this->errors = $image->getErrors();
+        $this->errors = $img->getErrors();
         return false;
     }
 
@@ -106,18 +103,10 @@ class ImageModel extends BaseModel {
         return false;
     }
     
-    private function uploadImage($path) {
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $path)) {
-            
-            return true;
-        }
-
-        return false;
-    }
-    
-    private function createThumbnail($source_path, $save_path, $width, $heigth, $resize_opt = 'default') {
+    private function createThumbnail($source_path, $save_path, $width, $heigth,
+            $quality, $resize_opt = 'maxheight') {
         $resize = new ResizeImage($source_path);
         $resize->resizeTo($width, $heigth, $resize_opt);
-        $resize->saveImage($save_path, 75);
+        $resize->saveImage($save_path, $quality);
     }
 }

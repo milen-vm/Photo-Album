@@ -8,7 +8,7 @@ class HomeModel extends BaseModel {
     
     public function getPublicImagesPaginated($page, $page_size) {
         $query_params = array(
-            'columns' => 'images.album_id, images.name, images.type',
+            'columns' => 'images.id, images.album_id, images.name, images.type',
             'join' => 'albums ON albums.id = images.album_id',
             'where' => 'albums.is_private = 0',
             'orderby' => 'images.create_date DESC',

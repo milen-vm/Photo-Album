@@ -166,4 +166,8 @@ abstract class BaseModel {
         
         return $arr;
     }
+    
+    public function makeDir($path, $mode = 0777) {
+         return is_dir($path) || mkdir($path, $mode, true);
+    }
 }

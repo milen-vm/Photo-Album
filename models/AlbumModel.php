@@ -38,11 +38,20 @@ class AlbumModel extends BaseModel {
     public function create($name, $description, $is_private, $user_id) {
         $album = new Album($name, $description, $is_private);
         if ($album->isValid()) {
-            return $this->createAlbum($album, $user_id);
+            $album_id = $this->createAlbum($album, $user_id);
+            if ($album_id != null) {
+                if ($this->createAlbumDirectories($album_id)) {
+                    return $album_id;
+                }
+                
+                return null;
+            }
+            
+            return null;
         }
         
         $this->errors = $album->getErrors();
-        return false;
+        return null;
     }
     
     private function createAlbum($album, $user_id) {
@@ -55,10 +64,27 @@ class AlbumModel extends BaseModel {
         $album_id = $this->add($pairs);
         if (!$album_id) {
             $this->errors[] = 'Database error. Can not upload image.';
-            return false;
+            return null;
         }
 
         return $album_id;
+    }
+    
+    private function createAlbumDirectories($album_id) {
+        $path = ALBUMS_PATH . D_S . $album_id;
+                
+        if (!$this->makeDir($path)) {
+            $this->errors[] = 'Error to create album directory.';
+            // TODO Delete album from database if directory creation fails
+            return false;
+        }
+        
+        if (!$this->makeDir($path . D_S . THUMBS_DIR_NAME)) {
+            $this->errors[] = 'Error to create thumbnail directory.';
+            return false;
+        }
+        
+        return true;
     }
     
     public function isUserOwnsAlbum($album_id, $user_id) {

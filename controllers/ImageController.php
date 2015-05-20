@@ -33,26 +33,16 @@ class ImageController extends BaseController {
         if (count($images) === 0) {
             $this->addInfoMessage('This album is empty.');
         } else {
-            $read_errors = 0;
-            foreach ($images as $image) {
-                $path = ALBUMS_PATH . '/' . $album_id .
-                    '/' . $image['name'] . '.' . $image['type'];
-                if (is_readable($path)) {
-                    $data = file_get_contents($path);
-                    $base64 = 'data:image/' . $image['type'] . ';base64,' . base64_encode($data);
-                    $this->images_data[] = $base64;
-                } else {
-                    ++$read_errors;
-                }
-            }
-            
-            if ($read_errors > 0) {
-                $this->addErrorMessage("Something goes wrong. There is $read_errors broken images.");
-            }
+            $main_path = ALBUMS_PATH . D_S . $album_id . D_S . THUMBS_DIR_NAME . D_S;
+            $this->images_data = $this->makeBase64($images, $main_path);
         }
         
         $_SESSION['album_id'] = $album_id;
         $this->renderView(__FUNCTION__);
+    }
+
+    public function view($image_id) {
+        var_dump($image_id);
     }
     
     public function upload() {
@@ -65,11 +55,10 @@ class ImageController extends BaseController {
         $album_id = $_SESSION['album_id'];
         unset($_SESSION['album_id']);
 
-        $full_file_name = basename($_FILES['photo']['name']);
-               
-        if (isset($_POST['submit']) && $full_file_name != '') {
+        $image = $_FILES['photo'];
+        if (isset($_POST['submit']) && $image['name'] != '') {
            // TODO Move check for is user owns album here
-            $image_id = $this->model->addImage($album_id, $this->getUserId());
+            $image_id = $this->model->addImage($image, $album_id, $this->getUserId());
             if (!$image_id) {
                 $errors = $this->model->getErrors();
                 foreach ($errors as $err) {
