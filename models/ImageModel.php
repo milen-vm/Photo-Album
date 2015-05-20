@@ -70,7 +70,7 @@ class ImageModel extends BaseModel {
                     $save_path = $img->getPath() . THUMBS_DIR_NAME . D_S .
                         $img->getFullFilename();
                     $this->createThumbnail($img->getFullPath(), $save_path,
-                        THUMBNAIL_WITH_SIZE, THUMBNAIL_WITH_SIZE, THUMBS_QUALITY_RATE);
+                        THUMBNAIL_WITH, THUMBNAIL_HEIGTH, THUMBS_QUALITY_RATE);
                         
                     return $image_id;
                 }
@@ -104,7 +104,7 @@ class ImageModel extends BaseModel {
     }
     
     private function createThumbnail($source_path, $save_path, $width, $heigth,
-            $quality, $resize_opt = 'maxheight') {
+            $quality, $resize_opt = 'default') {
         $resize = new ResizeImage($source_path);
         $resize->resizeTo($width, $heigth, $resize_opt);
         $resize->saveImage($save_path, $quality);

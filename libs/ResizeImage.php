@@ -29,7 +29,7 @@ class ResizeImage {
             case 'image/gif':
                 $this->image = imagecreatefromgif($filename);
                 break;
-            case 'image/phg':
+            case 'image/png':
                 $this->image = imagecreatefrompng($filename);
                 break;
             default:
@@ -39,7 +39,7 @@ class ResizeImage {
         $this->orig_width = imagesx($this->image);
         $this->orig_heigth = imagesy($this->image);
     }
-    
+    // TODO Add transparency for gif and png images
     public function saveImage($save_path, $image_quality = 100, $download = false) {
         switch ($this->ext) {
             case 'image/jpg':
@@ -119,12 +119,13 @@ class ResizeImage {
                 $this->resize_heigth = $height;
                 
             } else {
-                $this->resize_width = $width;
-                $this->resize_heigth = $height; 
+                $min_side = min($width, $height);
+                $this->resize_width = $min_side;
+                $this->resize_heigth = $min_side; 
             }
         } else {
-            $this->resize_width = $width;
-            $this->resize_heigth = $height; 
+            $this->resize_width = $this->orig_width;
+            $this->resize_heigth = $this->orig_heigth; 
         }
     }
 }

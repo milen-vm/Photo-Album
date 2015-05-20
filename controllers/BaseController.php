@@ -118,11 +118,12 @@ abstract class BaseController {
         $read_errors = 0;
         $images_data = array();
         foreach ($images as $image) {
+            $path = $main_path;
             if (isset($image['album_id'])) {
-                $main_path .= $image['album_id'] . D_S;
+                $path .= $image['album_id'] . D_S . THUMBS_DIR_NAME . D_S;
             }
 
-            $path = $main_path . $image['name'] . '.' . $image['type'];
+            $path .= $image['name'] . '.' . $image['type'];
             if (is_readable($path)) {
                 // header('Content-type: image/jpeg');
                 // $data = readfile($path);

@@ -3,10 +3,11 @@
         Public Images
     </legend>
     <div class="row">
-        <?php foreach ($this->images_data as $data) : ?>
+        <?php foreach ($this->images_data as $key => $value) : ?>
         <div class="col-xs-6 col-md-3">
-            <a href="<?=htmlentities($data)?>" title="Photo" class="thumbnail album-list">
-                <img src="<?=htmlentities($data)?>" alt="photo" />
+            <a href="<?=ROOT_URL . 'image/view/' . $key?>" title="View full size"
+                    class="thumbnail album-list">
+                <img src="<?=$value?>" alt="photo" />
             </a>
         </div>
         <?php endforeach ?>
