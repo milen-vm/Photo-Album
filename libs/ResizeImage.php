@@ -70,7 +70,7 @@ class ResizeImage {
         
         imagedestroy($this->resize_image);
     }
-    
+    // TODO Check $width and/or $height are negative or zero
     public function resizeTo($width, $height, $resize_option = 'default') {
         switch (strtolower($resize_option)) {
             case 'exact':

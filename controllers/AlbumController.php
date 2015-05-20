@@ -19,6 +19,10 @@ class AlbumController extends BaseController {
         
         $start = $this->pagination->getOffset();
         $this->albums = $this->model->getAll($this->getUserId(), $start, ALBUMS_PAGE_SIZE);
+        if (empty($this->albums)) {
+            $this->addInfoMessage('You do not have any albums.');
+        }
+        
         $this->renderView();
     }
     

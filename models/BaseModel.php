@@ -72,7 +72,7 @@ abstract class BaseModel {
             $types = $this->generateTypesString($bind_params);
             array_unshift($bind_params, $types);
         }
-        
+
         $query = $this->buildQuery($query_params);
         $stmt = $this->db->prepare($query);
         

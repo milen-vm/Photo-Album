@@ -125,8 +125,6 @@ abstract class BaseController {
 
             $path .= $image['name'] . '.' . $image['type'];
             if (is_readable($path)) {
-                // header('Content-type: image/jpeg');
-                // $data = readfile($path);
                 $data = file_get_contents($path);
                 $base64 = 'data:image/' . $image['type'] . ';base64,' . base64_encode($data);
                 $id = $image['id'];

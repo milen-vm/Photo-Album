@@ -42,7 +42,18 @@ class ImageController extends BaseController {
     }
 
     public function view($image_id) {
-        var_dump($image_id);
+        $image = $this->model->getImage($image_id, $this->getUserId());
+        if (empty($image)) {
+            $this->addErrorMessage('Invalid image selected.');
+            $this->redirect(DEFAULT_CONTROLLER);
+        }
+        
+        $path = ALBUMS_PATH . D_S . $image['album_id'] . D_S . 
+            $image['name'] . '.' . $image['type'];
+        $imginfo = getimagesize($path);
+
+        header('Content-type: ' . $imginfo['mime']);
+        readfile($path);
     }
     
     public function upload() {
