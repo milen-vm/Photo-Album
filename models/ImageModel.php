@@ -27,17 +27,17 @@ class ImageModel extends BaseModel {
     public function getImage($image_id, $user_id = null) {
          $query_params = array(
             'columns' => 'images.name, images.type, images.album_id',
-            'join' => 'albums ON albums.id = images.album_id',
-            'where' => 'images.id = ? AND (albums.is_private = 0' .
-                        ' OR albums.user_id = ?)'
+            'join' => 'albums ON albums.id = images.album_id'
          );
-         // if ($user_id != null) {
-             // $query_params['where'] .= ' OR albums.user_id = ?';
-             // $bind_params = array($image_id, $user_id);
-         // } else {
-             // $bind_params = array($image_id);
-         // }
-         $bind_params = array($image_id, $user_id);
+         if ($user_id === null) {
+             $query_params['where'] = 'images.id = ? AND albums.is_private = 0';
+             $bind_params = array($image_id);
+         } else {
+             $query_params['where'] = 'images.id = ? AND (albums.is_private = 0' .
+                 ' OR albums.user_id = ?)';
+             $bind_params = array($image_id, $user_id);
+         }
+         
          $image = $this->find($query_params, $bind_params);
          return $image[0];
     }

@@ -50,10 +50,15 @@ class ImageController extends BaseController {
         
         $path = ALBUMS_PATH . D_S . $image['album_id'] . D_S . 
             $image['name'] . '.' . $image['type'];
-        $imginfo = getimagesize($path);
-
-        header('Content-type: ' . $imginfo['mime']);
-        readfile($path);
+        if (file_exists($path)) {
+            $imginfo = getimagesize($path);
+            header('Content-type: ' . $imginfo['mime']);
+            readfile($path);
+            exit;
+        }
+        
+        $this->addErrorMessage('Image is not exist.');
+        $this->redirect(DEFAULT_CONTROLLER);
     }
     
     public function upload() {
