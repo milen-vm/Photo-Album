@@ -45,7 +45,7 @@ abstract class BaseController {
     }
     
     public function redirect($controller_Name, $action_name = null, array $params = null) {
-        $url = '/' . DX_ROOT_PATH . urlencode($controller_Name);
+        $url = '/' . urlencode($controller_Name);    // '/' . DX_ROOT_PATH . urlencode($controller_Name);
         if ($action_name != null) {
             $url .= '/' . urlencode($action_name);
         }

@@ -27,7 +27,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?=ROOT_URL?>"><img src="<?=ROOT_URL?>content/images/logo.png" ></a>
+                    <a class="navbar-brand" href="<?=ROOT_URL?>"><img src="<?=ROOT_URL?>content/images/logo.gif" ></a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -63,7 +63,7 @@
                                 </p>
                             </li>
                             <li>
-                                <a id="logout" href="#">Logout</a>
+                                <a id="logout" href="">Logout</a>
                             </li>
                         <?php endif ?>
                     </ul>
@@ -75,7 +75,7 @@
             $('#logout').on('click', function(ev) {
                 $.ajax({
                     method: 'POST',
-                    url: '/Photo-Album/account/logout',
+                    url: '/account/logout',
                     success: function(data) {
                         location.reload(); 
                     },

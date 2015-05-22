@@ -1,5 +1,6 @@
 <?php
 define('D_S', DIRECTORY_SEPARATOR);
+define('DOMAIN_NAME', 'localhost');
 
 define('DEFAULT_CONTROLLER', 'home');
 define('DEFAULT_ACTION', 'index');
