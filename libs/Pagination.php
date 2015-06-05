@@ -82,7 +82,7 @@ class Pagination {
     }
     
     public function includePangination() {
-        $main_url = reset(explode('?', $_SERVER['REQUEST_URI']));
+        $main_url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $this->first_page_url = $main_url . '?page=1';
         $this->prev_page_url = $main_url . '?page=' . ($this->current_page - 1);
         $this->next_page_url = $main_url . '?page=' . ($this->current_page + 1);

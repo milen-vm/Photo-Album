@@ -8,12 +8,12 @@
                  echo htmlspecialchars($this -> title);
             } ?>
         </title>
-        <link rel="shortcut icon" href="<?=ROOT_URL?>content/images/logo.png" type="image/x-icon"/>
+        <link rel="shortcut icon" href="<?=ROOT_URL?>content/images/logo.gif" type="image/x-icon"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"> -->
         <link rel="stylesheet" href="http://bootswatch.com/cerulean/bootstrap.min.css">
         <link rel="stylesheet" href="<?=ROOT_URL?>content/styles/styles.css" />
         <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="<?=ROOT_URL?>content/js/logout.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-default" role="navigation">
@@ -71,17 +71,3 @@
             </div>
         </nav>
         <?php include_once 'messages.php'; ?>
-        <script>
-            $('#logout').on('click', function(ev) {
-                $.ajax({
-                    method: 'POST',
-                    url: '/account/logout',
-                    success: function(data) {
-                        location.reload(); 
-                    },
-                    error: function() {
-                        console.log('Cannot load AJAX data.');
-                    }
-                })
-            });
-        </script>

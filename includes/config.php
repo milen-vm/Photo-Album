@@ -6,10 +6,15 @@ define('DEFAULT_CONTROLLER', 'home');
 define('DEFAULT_ACTION', 'index');
 define('DEFAULT_LAYOUT', 'default');
 
-define('SERVER_NAME', 'localhost');
-define('USER_NAME', 'root');
-define('SERVER_PASSWORD', '');
-define('DATABASE_NAME', 'photo_album');
+// define('SERVER_NAME', 'localhost');
+// define('USER_NAME', 'root');
+// define('SERVER_PASSWORD', '');
+// define('DATABASE_NAME', 'photo_album');
+
+define('SERVER_NAME', 'mysql.hostinger.ru');
+define('USER_NAME', 'u687765474_milen');
+define('SERVER_PASSWORD', '@8htMR71pnZd`#');
+define('DATABASE_NAME', 'u687765474_album');
 
 define('USER_NAME_MIN_LENGTH', 3);
 define('FIRST_LAST_NAME_MIN_LENGTH', 2);
