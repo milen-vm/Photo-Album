@@ -5,31 +5,22 @@
             <legend>
                 Register Account
             </legend>
-            <!-- Username input-->
+            <!-- Email input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="username">Username</label>
+                <label class="col-md-4 control-label" for="email">E-mail</label>
                 <div class="col-md-4">
-                    <input id="username" name="user_name" placeholder="max length 20 characters"
-                        class="form-control input-md" type="text" autofocus="" />
-                    <span class="help-block">Usernme for login to yours albums.</span>
+                    <input id="email" name="email" placeholder="e-mail"
+                        class="form-control input-md" type="email" />
+                    <span class="help-block">Enter valid e-mail.</span>
                 </div>
             </div>
-            <!-- First name input-->
+            <!-- Name input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="first-name">First name</label>
+                <label class="col-md-4 control-label" for="full_name">Full name</label>
                 <div class="col-md-4">
-                    <input id="first-name" name="first_name" placeholder="max length 20 characters"
+                    <input id="full_name" name="full_name" placeholder="max length 50 characters"
                         class="form-control input-md" type="text" />
-                    <span class="help-block">First name will be displayed on site.</span>
-                </div>
-            </div>
-            <!-- Last name input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="last-name">Last name</label>
-                <div class="col-md-4">
-                    <input id="last-name" name="last_name" placeholder="max length 20 characters"
-                        class="form-control input-md" type="text" />
-                    <span class="help-block">Last name will be displayed on site.</span>
+                    <span class="help-block">Name will be displayed on site.</span>
                 </div>
             </div>
             <!-- Birth date input-->
@@ -39,15 +30,6 @@
                     <input id="birth-date" name="birth_date" placeholder="YYYY-MM-DD"
                         class="form-control input-md" type="date" />
                     <span class="help-block">Birth date is optional.</span>
-                </div>
-            </div>
-            <!-- Email input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="email">E-mail</label>
-                <div class="col-md-4">
-                    <input id="email" name="email" placeholder="e-mail"
-                        class="form-control input-md" type="email" />
-                    <span class="help-block">Enter valid e-mail.</span>
                 </div>
             </div>
             <!-- Password input-->

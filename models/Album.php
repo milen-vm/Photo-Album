@@ -42,7 +42,7 @@ class Album {
             return;
         }
         
-        if (!preg_match('/^[A-Za-z0-9-_ ]+$/', $this->name)) {
+        if (!preg_match('/^[A-Za-z0-9-_\s+]+$/', $this->name)) {
             $this->errors[] = 'Album name can contains only latin ' .
                 "leters, digits, whitespace, '-' and '_'.";
         }
@@ -51,13 +51,7 @@ class Album {
     private function validateDescription() {   
         if (empty($this->description)) {
             $this->description = null;
-            return;
         }
-        
-        // if (!preg_match('/^[A-Za-zА-Яа-я-]+$/', $this->first_name)) {
-            // $this->errors[] = 'First name can contains only cyrillic ' .
-                // "or latin leters and '-'.";
-        // }
     }
     
     private function validateIsPrivate() {

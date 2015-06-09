@@ -51,10 +51,18 @@ abstract class BaseModel {
             if ($stmt->execute()) {
                 return $stmt->insert_id;
             }
-            // printf("1 Error message: %s\n", $stmt->error);
+            
+            if (DEBUG_MODE) {
+                printf("1 Error message: %s\n", $stmt->error);
+            }
+
             return false;
         }
-        // printf("Error message: %s\n", $this->db->error);
+        
+        if (DEBUG_MODE) {
+                printf("Error message: %s\n", $this->db->error);
+        }
+
         return false;
     }
 

@@ -1,36 +1,27 @@
 <?php
 
 class Account {
-    private $user_name;
-    private $first_name;
-    private $last_name;
-    private $birth_date;
     private $email;
+    private $full_name;
+    private $birth_date;
     private $password;
     private $confirm_password;
     private $errors = array();
     
-    public function __construct($user_name, $first_name, $last_name, $birth_date,
-        $email, $password, $confirm_password) {
-        $this->user_name = $user_name;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-        $this->birth_date = $birth_date;
+    public function __construct($email, $full_name, $birth_date, $password, $confirm_password) {
         $this->email = $email;
+        $this->full_name = $full_name;
+        $this->birth_date = $birth_date;
         $this->password = $password;
         $this->confirm_password = $confirm_password;
     }
-        
-    public function getUsername() {
-        return $this->user_name;
+    
+    public function getEmail() {
+        return $this->email;
     }
     
-    public function getFirstName() {
-        return $this->first_name;
-    }
-    
-    public function getLastName() {
-        return $this->last_name;
+    public function getFullName() {
+        return $this->full_name;
     }
     
     public function getBirthDate() {
@@ -39,9 +30,6 @@ class Account {
         }
         
         return $this->birth_date;
-    }
-    public function getEmail() {
-        return $this->email;
     }
     
     public function getPassword() {
@@ -58,67 +46,47 @@ class Account {
     }
         
     public function isValid() {
-        $this->validateUsername();
-        $this->validateFirstName();
-        $this->validateLastName();
-        $this->validateBirthDate();
         $this->validateEmail();
+        $this->validateFullName();
+        $this->validateBirthDate();
         $this->validatePassword();
         
         return count($this->errors) === 0;
     }
     
-    private function validateUsername() {
-        if (empty($this->user_name)) {
-            $this->errors[] = 'Username is required.';
-            return;
-        }
-        
-        if (strlen($this->user_name) < USER_NAME_MIN_LENGTH) {
-            $this->errors[] = 'Min username length is ' .
-                USER_NAME_MIN_LENGTH .' chars.';
-            return;
-        }
-        
-        if (!preg_match('/^[A-Za-z0-9-_]+$/', $this->user_name)) {
-            $this->errors[] = 'Username can contains only latin ' .
-                "leters, digits, '-' and '_'.";
+    private function validateEmail() {
+        if (empty($this->email)) {
+            $this->errors[] = 'Email is required.';
+        } else {
+            if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+                $this->errors[] = 'Invalid email format.';
+            }
         }
     }
     
-    private function validateFirstName() {
-        if (empty($this->first_name)) {
+    private function validateFullName() {
+        if (empty($this->full_name)) {
             $this->errors[] = 'First name is required.';
             return;
         }
         
-        if (strlen($this->first_name) < FIRST_LAST_NAME_MIN_LENGTH) {
-            $this->errors[] = 'First name min lenth is ' .
-                FIRST_LAST_NAME_MIN_LENGTH . ' chars.';
+        $length = mb_strlen($this->full_name, 'UTF-8');
+        if ($length < FULL_NAME_MIN_LENGTH) {
+            $this->errors[] = 'Full name min lenth is ' .
+                FULL_NAME_MIN_LENGTH . ' chars.';
             return;
         }
         
-        if (!preg_match('/^[A-Za-zА-Яа-я-]+$/', $this->first_name)) {
-            $this->errors[] = 'First name can contains only cyrillic ' .
-                "or latin leters and '-'.";
-        }
-    }
-    
-    private function validateLastName() {
-        if (empty($this->last_name)) {
-            $this->errors[] = 'Last name is required.';
+        if ($length > FULL_NAME_MAX_LENGTH) {
+            $this->errors[] = 'Full name max lenth is ' .
+                FULL_NAME_MAX_LENGTH . ' chars. Your name is ' .
+                $length . ' chars long.';
             return;
         }
         
-        if (strlen($this->last_name) < FIRST_LAST_NAME_MIN_LENGTH) {
-            $this->errors[] = 'Last name min lenth is ' .
-                FIRST_LAST_NAME_MIN_LENGTH . ' chars.';
-            return;
-        }
-        
-        if (!preg_match('/^[A-Za-zА-Яа-я-]+$/', $this->first_name)) {
-            $this->errors[] = 'Last name can contains only cyrillic ' .
-                "or latin leters and '-'.";
+        if (!preg_match('/^[A-Za-z-\s+]+$/', $this->full_name)) {
+            $this->errors[] = 'Full name can contains only ' .
+                "latin leters and '-'.";
         }
     }
     
@@ -144,16 +112,6 @@ class Account {
         }
     }
     
-    private function validateEmail() {
-        if (empty($this->email)) {
-            $this->errors[] = 'Email is required.';
-        } else {
-            if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-                $this->errors[] = 'Invalid email format.';
-            }
-        }
-    }
-    
     private function validatePassword() {
         if (empty($this->password)) {
             $this->errors[] = 'Password is required.';
@@ -173,6 +131,24 @@ class Account {
         
         if ($this->password != $this->confirm_password) {
             $this->errors[] = 'Confirm password do not match.';
+        }
+    }
+    // Not in use
+    private function validateUsername() {
+        if (empty($this->user_name)) {
+            $this->errors[] = 'Username is required.';
+            return;
+        }
+        
+        if (strlen($this->user_name) < USER_NAME_MIN_LENGTH) {
+            $this->errors[] = 'Min username length is ' .
+                USER_NAME_MIN_LENGTH .' chars.';
+            return;
+        }
+        
+        if (!preg_match('/^[A-Za-z0-9-_]+$/', $this->user_name)) {
+            $this->errors[] = 'Username can contains only latin ' .
+                "leters, digits, '-' and '_'.";
         }
     }
 }

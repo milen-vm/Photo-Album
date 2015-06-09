@@ -12,55 +12,48 @@ class AccountModel extends BaseModel {
         return $this->errors;
     }
     
-    public function register($user_name, $first_name, $last_name, $birth_date,
-            $email, $password, $confirm_password) {
-        $account = new Account($user_name, $first_name, $last_name, $birth_date,
-        $email, $password, $confirm_password);
+    public function register($user_data) {
+        $account = new Account($user_data['email'], $user_data['full_name'], $user_data['birth_date'],
+            $user_data['password'], $user_data['confirm_password']);
         
         if ($account->isValid()) {
-            $is_user_name_unique = $this->isEntryUnique('user_name', $account->getUsername());
-            
-            if ($is_user_name_unique) {
-                $is_email_unique = $this->isEntryUnique('email', $account->getEmail());
-                
-                if ($is_email_unique) {
-                    return $this->registerUser($account);
-                    
-                } else {
-                    $this->errors[] = 'Email is already taken.';
-                    return false;
-                }
+            $is_email_unique = $this->isEntryUnique('email', $account->getEmail());
+            if ($is_email_unique) {
+                return $this->registerUser($account);
                 
             } else {
-                $this->errors[] = 'Username is already taken.';
-                return false;
+                $this->errors[] = 'Email is already taken.';
+                return null;
             }
         } else {
             $this->errors = $account->getErrors();
-            return false;
+            return null;
         }
     }
         
-    public function login($username, $password) {
-        $query = 'SELECT id, user_name, first_name, last_name, password_hash FROM users WHERE user_name = ?';
+    public function login($email, $password) {
+        $query = 'SELECT id, full_name, password_hash FROM users WHERE email = ?';
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('s', $username);
+        $stmt->bind_param('s', $email);
         
         if ($stmt->execute()) {
-            $stmt->bind_result($id, $user_name, $first_name, $last_name, $password_hash);
+            $stmt->bind_result($id, $full_name, $password_hash);
             $stmt->fetch();
            // while ($stmt->fetch()) {
                // //do stuff with the data
                // echo "$id, $user_name, $password_hash";
            // }
             if (password_verify($password, $password_hash)) {
-                $this->full_name = "$first_name $last_name";
-                $this->user_id = $id;
-                return true;
+                
+                return array(
+                    'id' => $id,
+                    'full_name' => $full_name,
+                    'email' => $email
+                );
             }
         }
 
-        return false;
+        return null;
     }
 
     private function isEntryUnique($key, $entry) {
@@ -79,17 +72,13 @@ class AccountModel extends BaseModel {
     }
 
     private function registerUser($account) {
-        $query = 'INSERT INTO users (user_name, first_name, last_name,' .
-            ' birth_date, email, password_hash) VALUES (?, ?, ?, ?, ?, ?)';
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ssssss', $account->getUsername(), $account->getFirstName(),
-            $account->getLastName(), $account->getBirthDate(),
-            $account->getEmail(), $account->getPasswordHash());
-        if ($stmt->execute()) {
-            return true;
-        }
+        $pairs = array();
+        $pairs['email'] = $account->getEmail();
+        $pairs['full_name'] = $account->getFullName();
+        $pairs['birth_date'] = $account->getBirthDate();
+        $pairs['password_hash'] = $account->getPasswordHash();
+        $id = $this->add($pairs);
         
-        // $this->errors[] = $stmt->error;
-        throw new Exception($stmt->error);
+        return $id;
     }
 }

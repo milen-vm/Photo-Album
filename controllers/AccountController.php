@@ -25,28 +25,22 @@ class AccountController extends BaseController {
             if (!isset($_POST['form_token']) || $_POST['form_token'] != $_SESSION['form_token']) {
                 die('Aplication error.');
             }
-            
-            $user_name = trim($_POST['user_name']);
-            $first_name = trim($_POST['first_name']);
-            $last_name = trim($_POST['last_name']);
-            $birth_date = trim($_POST['birth_date']);
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
-            $confirm_password = trim($_POST['confirm_password']);
+            $user_data = array();
+            $user_data['email'] = trim($_POST['email']);
+            $user_data['full_name'] = trim($_POST['full_name']);
+            $user_data['birth_date'] = trim($_POST['birth_date']);
+            $user_data['password'] = trim($_POST['password']);
+            $user_data['confirm_password'] = trim($_POST['confirm_password']);
             // TODO Save field values on wrong input after submit - get account from model to view
-            $register_result = $this->model->register($user_name, $first_name,
-                $last_name, $birth_date, $email, $password, $confirm_password);
+            $id = $this->model->register($user_data);
                 
-            if ($register_result === true) {
+            if ($id != null) {
                 $this->addInfoMessage('Successful registration.');
-                
-                $login_result = $this->model->login($user_name, $password);
-                
-                if ($login_result) {
-                    $this->createUserSession($user_name);
-                    
-                    $this->redirect('home');
-                }
+                $this->createUserSession(array(
+                    'di' => $id,
+                    'full_name' => $user_data['full_name'],
+                    'email' => $user_data['email']
+                ));
                 $this->redirect('home');
             } else {
                 $errors = $this->model->getErrors();
@@ -73,12 +67,12 @@ class AccountController extends BaseController {
                 die('Aplication error.');
             }
             
-            $user_name = trim($_POST['user_name']);
+            $email = trim($_POST['email']);
             $password = trim($_POST['password']);
-            $login_result = $this->model->login($user_name, $password);
+            $user_data = $this->model->login($email, $password);
             
-            if ($login_result) {
-                $this->createUserSession($user_name);
+            if ($user_data != null) {
+                $this->createUserSession($user_data);
                 
                 $this->addInfoMessage('Login successfuly.');
                 $this->redirect('home');
@@ -103,9 +97,9 @@ class AccountController extends BaseController {
         }
     }
     
-    private function createUserSession($user_name) {
-        $_SESSION['user_name'] = $user_name;
-        $_SESSION['full_name'] = $this->model->full_name;
-        $_SESSION['user_id'] = $this->model->user_id;
+    private function createUserSession($user_data) {
+        $_SESSION['email'] = $user_data['email'];
+        $_SESSION['full_name'] = $user_data['full_name'];
+        $_SESSION['user_id'] = $user_data['id'];
     }
 }

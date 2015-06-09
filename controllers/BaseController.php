@@ -59,16 +59,16 @@ abstract class BaseController {
     }
     
     public function isLoggedIn() {
-        if (isset( $_SESSION['user_name'])) {
+        if (isset( $_SESSION['email'])) {
             return true;
         }
 
         return false;
     }
     
-    public function getUsername() {
+    public function getEmail() {
         if ($this->isLoggedIn()) {
-            return $_SESSION['user_name'];
+            return $_SESSION['email'];
         }
 
         return null;
@@ -140,6 +140,4 @@ abstract class BaseController {
         // TODO Do something if $images_data is empty
         return $images_data;
     }
-    
-    
 }

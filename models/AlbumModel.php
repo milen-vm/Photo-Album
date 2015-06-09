@@ -63,7 +63,7 @@ class AlbumModel extends BaseModel {
                 );
         $album_id = $this->add($pairs);
         if (!$album_id) {
-            $this->errors[] = 'Database error. Can not upload image.';
+            $this->errors[] = 'Database error. Can not create album.';
             return null;
         }
 

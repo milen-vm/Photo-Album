@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
             <?php if (isset($this->title)) {
-                 echo htmlspecialchars($this -> title);
+                 echo 'Photo Album - ' . htmlspecialchars($this -> title);
             } ?>
         </title>
         <link rel="shortcut icon" href="<?=ROOT_URL?>content/images/logo.gif" type="image/x-icon"/>
