@@ -1,14 +1,16 @@
 <div class="container">
     <form action="<?=ROOT_URL?>account/login" method="post" class="form-horizontal">
         <!-- Form Name -->
-        <h3>Login to Account</h3>
+        <h3>
+            Login to Account
+        </h3>
         <hr />
         <!-- Email input-->
         <div class="form-group">
             <label class="col-md-4 control-label" for="email">Email</label>
             <div class="col-md-4">
                 <input id="email" name="email" placeholder="email"
-                    class="form-control input-md" type="text" autofocus="" />
+                    class="form-control input-md" type="email" autofocus="" />
                 <span class="help-block">Enter email to login in yours albums.</span>
             </div>
         </div>

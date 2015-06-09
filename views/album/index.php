@@ -12,11 +12,11 @@
                             <img src="<?=ROOT_URL?>content/images/photo-album.gif" alt="Title photo">
                         </a>
                         <div class="caption">
-                            <h3><?= htmlspecialchars($album['name']) ?></h3>
+                            <h4><?= htmlspecialchars($album['name']) ?></h4>
                             <form action="<?php echo ROOT_URL . 'album/delete/' . htmlspecialchars($album['id']);?>"
-                                method="post">
-                                <a href="#confirm" class="btn btn-danger delete-album" data-toggle="modal">
-                                    Delete
+                                method="post" class="text-right">
+                                <a href="#confirm" class="btn btn-link delete-album text-danger" data-toggle="modal">
+                                    <span class="text-danger">Delete</span>
                                 </a>
                                 <input type="hidden" name="form_token" value="<?=$_SESSION['form_token']?>" />
                             </form>
@@ -41,9 +41,9 @@
                 <p>This will remove all images in there.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cansel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button id="confirm-delete" type="button" class="btn btn-danger"
-                    data-dismiss="modal">Delete</button>
+                    data-dismiss="modal">Ok</button>
             </div>
         </div>
     </div>

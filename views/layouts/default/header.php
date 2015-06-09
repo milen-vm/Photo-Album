@@ -55,18 +55,20 @@
                             </li>
                         <?php endif ?>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <?php if ($this->isLoggedIn()) :?>
-                            <li>
-                                <p id="full-name" class="navbar-text">
-                                    Wellcome, <?php echo $this->getFullName(); ?>
-                                </p>
+                    <?php if ($this->isLoggedIn()) :?>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <?php echo $this->getFullName(); ?> <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a id="logout" href="">Logout</a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li>
-                                <a id="logout" href="">Logout</a>
-                            </li>
-                        <?php endif ?>
-                    </ul>
+                        </ul>
+                    <?php endif ?>
                 </div><!-- /.navbar-collapse -->
             </div>
         </nav>

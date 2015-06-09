@@ -85,7 +85,7 @@ class AccountController extends BaseController {
         
         $this->renderView(__FUNCTION__);
     }
-    
+    // not working correctly when is executed from 'authorize' route
     public function logout() {
         $this->authorize();
 
