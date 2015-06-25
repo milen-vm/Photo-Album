@@ -84,10 +84,10 @@ class Account {
             return;
         }
         
-        if (!preg_match('/^[A-Za-z-\s+]+$/', $this->full_name)) {
-            $this->errors[] = 'Full name can contains only ' .
-                "latin leters and '-'.";
-        }
+        // if (!preg_match('/^[A-Za-z-\s+]+$/', $this->full_name)) {
+            // $this->errors[] = 'Full name can contains only ' .
+                // "latin leters and '-'.";
+        // }
     }
     
     private function validateBirthDate() {

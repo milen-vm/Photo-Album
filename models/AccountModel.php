@@ -32,22 +32,20 @@ class AccountModel extends BaseModel {
     }
         
     public function login($email, $password) {
-        $query = 'SELECT id, full_name, password_hash FROM users WHERE email = ?';
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('s', $email);
+         $result = $this->find(
+            array(
+                'columns' => 'id, full_name, password_hash',
+                'where' => 'email = ?'
+            ),
+            array($email)
+        );
         
-        if ($stmt->execute()) {
-            $stmt->bind_result($id, $full_name, $password_hash);
-            $stmt->fetch();
-           // while ($stmt->fetch()) {
-               // //do stuff with the data
-               // echo "$id, $user_name, $password_hash";
-           // }
-            if (password_verify($password, $password_hash)) {
+        if (isset($result[0])) {
+            if (password_verify($password, $result[0]['password_hash'])) {
                 
                 return array(
-                    'id' => $id,
-                    'full_name' => $full_name,
+                    'id' => $result[0]['id'],
+                    'full_name' => $result[0]['full_name'],
                     'email' => $email
                 );
             }
@@ -57,18 +55,19 @@ class AccountModel extends BaseModel {
     }
 
     private function isEntryUnique($key, $entry) {
-        $query = 'SELECT COUNT(id) FROM users WHERE ' . $key . ' = ?';
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param('s', $entry);
+        $result = $this->find(
+            array(
+                'columns' => 'COUNT(id)',
+                'where' => $key . ' = ?'
+            ),
+            array($entry)
+        );
         
-        if ($stmt->execute()) {
-            $stmt->bind_result($result);
-            $stmt->fetch();
-            return $result === 0;
+        if (isset($result[0]['COUNT(id)'])) {
+            return $result[0]['COUNT(id)'] === 0;
         }
-        
-        // $this->errors[] = $stmt->error;
-        throw new Exception($stmt->error);
+
+        throw new Exception('Application error');
     }
 
     private function registerUser($account) {
