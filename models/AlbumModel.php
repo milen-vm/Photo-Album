@@ -11,20 +11,21 @@ class AlbumModel extends BaseModel {
         return $this->errors;
     }
     // TODO Rename to get whit pagination and create function getAll
-    public function getAll($user_id, $start, $page_size) {
+    public function getUserAlbums($user_id, $start, $page_size) {
         $query_params = array(
             'columns' => 'id, name, description',
             'where' => 'user_id = ?',
             'orderby' => 'create_date DESC',
             'limit' => '?, ?'
         );
+        
         $bind_params = array($user_id, $start, $page_size);
         $albums = $this->find($query_params, $bind_params);
         
         return $albums;
     }
     
-    public function getCount($user_id) {
+    public function getUserAlbumsCount($user_id) {
         $query_params = array(
             'columns' => 'COUNT(id)',
             'where' => 'user_id = ?'

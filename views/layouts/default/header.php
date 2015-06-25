@@ -35,9 +35,6 @@
                         <li>
                             <a href="<?=ROOT_URL?>home/index">Home</a>
                         </li>
-                        <li>
-                            <a href="<?=ROOT_URL?>home/index">Public albums</a>
-                        </li>
                         <?php if (!$this->isLoggedIn()) :?>
                             <li>
                                 <a href="<?=ROOT_URL?>account/register">Register</a>

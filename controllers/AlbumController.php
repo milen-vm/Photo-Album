@@ -14,20 +14,16 @@ class AlbumController extends BaseController {
             $_SESSION['form_token'] = hash('sha256', uniqid());
         }
 
-        $albums_count = $this->model->getCount($this->getUserId());
+        $albums_count = $this->model->getUserAlbumsCount($this->getUserId());
         $this->pagination = new Pagination($albums_count, ALBUMS_PAGE_SIZE);
         
         $start = $this->pagination->getOffset();
-        $this->albums = $this->model->getAll($this->getUserId(), $start, ALBUMS_PAGE_SIZE);
+        $this->albums = $this->model->getUserAlbums($this->getUserId(), $start, ALBUMS_PAGE_SIZE);
         if (empty($this->albums)) {
             $this->addInfoMessage('You do not have any albums.');
         }
         
         $this->renderView();
-    }
-    
-    public function publicalbums() {
-        
     }      
     
     public function create() {
