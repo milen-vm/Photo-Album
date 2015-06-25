@@ -1,7 +1,8 @@
 <div class="container">
-    <legend>
+    <h3>
         My albums
-    </legend>
+    </h3>
+    <hr />
     <div class="row">
         <?php if (isset($this->albums)) : ?>
             <?php foreach ($this->albums as $album) : ?>

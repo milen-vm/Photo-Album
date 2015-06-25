@@ -1,9 +1,10 @@
 <div class="container">
     <form action="<?=ROOT_URL?>account/register" method="post" class="form-horizontal">
         <!-- Form Name -->
-        <legend>
+        <h3>
             Register Account
-        </legend>
+        </h3>
+        <hr />
         <!-- Email input-->
         <div class="form-group">
             <label class="col-md-4 control-label" for="email">E-mail</label>

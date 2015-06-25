@@ -1,7 +1,8 @@
 <div class="container">
-    <legend>
+    <h3>
         <?=htmlspecialchars($this->album_data['name'])?>
-    </legend>
+    </h3>
+    <hr />
     <p><?=htmlspecialchars($this->album_data['description'])?></p>
     <div class="row">
         <?php foreach ($this->images_data as $key => $value) : ?>

@@ -1,9 +1,10 @@
 <div class="container">
     <form action="<?=ROOT_URL?>album/create" method="post" class="form-horizontal">
         <!-- Form Name -->
-        <legend>
+        <h3>
             Create Album
-        </legend>
+        </h3>
+        <hr />
         <!-- Album name input-->
         <div class="form-group">
             <label class="col-md-4 control-label" for="textinput">Name</label>

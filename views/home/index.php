@@ -1,7 +1,8 @@
 <div class="container">
-    <legend>
+    <h3>
         Public Images
-    </legend>
+    </h3>
+    <hr />
     <div class="row">
         <?php foreach ($this->images_data as $key => $value) : ?>
         <div class="col-xs-6 col-md-3">
