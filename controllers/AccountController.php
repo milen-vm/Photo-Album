@@ -37,7 +37,7 @@ class AccountController extends BaseController {
             if ($id != null) {
                 $this->addInfoMessage('Successful registration.');
                 $this->createUserSession(array(
-                    'di' => $id,
+                    'id' => $id,
                     'full_name' => $user_data['full_name'],
                     'email' => $user_data['email']
                 ));

@@ -40,7 +40,6 @@ class AlbumController extends BaseController {
             $name = trim($_POST['name']);
             $description = trim($_POST['description']);
             $is_private = isset($_POST['is_private']) ? $_POST['is_private'] : '';
-            
             $album_id = $this->model->create($name, $description, $is_private,
                 $this->getUserId());
             
