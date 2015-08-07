@@ -9,7 +9,7 @@ class Album {
     public function __construct($name, $description, $is_private) {
         $this->name = trim($name);
         $this->description = trim($description);
-        $this->is_private = $is_private;
+        $this->is_private = (int)$is_private;
     }
         
     public function getName() {
@@ -60,7 +60,7 @@ class Album {
             return;
         }
         
-        if (intval($this->is_private) != 1 && intval($this->is_private) != 0) {
+        if ($this->is_private != 1 && $this->is_private != 0) {
             $this->is_private = null;
             $this->errors[] = 'Invalid privacy value. Your album is set to public.';
         }

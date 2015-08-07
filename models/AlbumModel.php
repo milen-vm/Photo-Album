@@ -36,6 +36,39 @@ class AlbumModel extends BaseModel {
         return $result[0]['COUNT(id)'];
     }
     
+    public function getAlbum($album_id, $user_id) {
+        $query_params = array(
+            'columns' => 'id, name, description, is_private',
+            'where' => 'id = ? AND user_id = ?'
+        );
+        
+        $bind_params = array($album_id, $user_id);
+        $album = $this->find($query_params, $bind_params);
+        
+        return $album;
+    }
+    
+    public function updateAlbum($album_id, $name, $description, $is_private, $user_id) {
+        $album = new Album($name, $description, $is_private);
+        if ($album->isValid()) {
+            $query_params = array(
+                'set' => 'name=?, description=?, is_private=?',
+                'where' => 'id=? AND user_id=?'
+            );
+            $bind_params = array($album->getName(), $album->getDescription(),
+                $album->getIsPrivate(), $album_id, $user_id);
+            $result = $this->update($query_params, $bind_params);
+            if ($result == null) {
+                $this->errors[] = 'Database error. Album is not edited.';
+            }
+            
+            return $result;
+        }
+        
+        $this->errors = $album->getErrors();
+        return null;
+    }
+    
     public function create($name, $description, $is_private, $user_id) {
         $album = new Album($name, $description, $is_private);
         if ($album->isValid()) {

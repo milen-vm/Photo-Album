@@ -85,11 +85,14 @@ class ResizeImage {
                 $this->resize_width = $this->resizeWidthByHeight($height);
                 $this->resize_heigth = $height;
                 break;
-            case 'maxwidth&height':
+            case 'maxboth':
                 $this->resizeMaxWidthMaxHeight($width, $height);
                 break;
-            default:
+            case 'default':
                 $this->resizeDefault($width, $height);
+                break;
+            default:
+                throw new Exception('Invalid resize option: ' . $resize_option);
                 break;
         }
         
@@ -112,7 +115,7 @@ class ResizeImage {
         if (($this->orig_width / $this->orig_heigth) < ($width / $height)) {
             $this->resizeTo($width, $height, 'maxheight');
         } elseif (($this->orig_width / $this->orig_heigth) > ($width / $height)) {
-            $this->resizeTo($width, $height, 'maxwidth');
+            $this->resizeTo($width, $height, 'exact');
         } else {
             $this->resizeTo($width, $height, 'exact');
         }

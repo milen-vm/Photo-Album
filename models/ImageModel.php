@@ -123,7 +123,7 @@ class ImageModel extends BaseModel {
     }
     
     private function createThumbnail($source_path, $save_path, $width, $heigth,
-            $quality, $resize_opt = 'maxwidth&height') {
+            $quality, $resize_opt = 'maxboth') {
         $resize = new ResizeImage($source_path);
         $resize->resizeTo($width, $heigth, $resize_opt);
         $resize->saveImage($save_path, $quality);

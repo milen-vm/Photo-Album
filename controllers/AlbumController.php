@@ -57,6 +57,50 @@ class AlbumController extends BaseController {
         $this->renderView(__FUNCTION__);
     }
 
+    public function edit($album_id) {
+        $this->authorize();
+        if (!$this->is_post) {
+            $_SESSION['form_token'] = hash('sha256', uniqid());
+        }
+
+        $album = $this->model->getAlbum($album_id, $this->getUserId());
+        if (isset($album[0])) {
+            $this->album = $album[0];
+        } else {
+            $this->addErrorMessage('Invalid album selected.');
+            $this->redirect('album');
+        }
+
+        $this->renderView(__FUNCTION__);
+    }
+
+    public function update($album_id) {
+        if ($this->is_post) {
+            if (!isset($_POST['form_token']) || $_POST['form_token'] != $_SESSION['form_token']) {
+                die('Aplication error.');
+            }
+            
+            $name = $_POST['name'];
+            $description = $_POST['description'];
+            $is_private = isset($_POST['is_private']) ? $_POST['is_private'] : '';
+            
+            $result = $this->model->updateAlbum($album_id, $name, $description,
+                $is_private, $this->getUserId());
+
+            if ($result != null) {
+                $this->addInfoMessage('Album successfully edited.');    // TODO Back to current page number
+                $this->redirect('album');
+            } else {
+                $errors = $this->model->getErrors();
+                foreach ($errors as $err) {
+                    $this->addErrorMessage($err);
+                }
+                
+                $this->redirect('album', 'edit', array($album_id));
+            }
+        }
+    }
+
     public function delete($album_id) {
         $this->authorize();
         if (!isset($_POST['form_token']) || $_POST['form_token'] != $_SESSION['form_token']) {

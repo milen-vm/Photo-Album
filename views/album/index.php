@@ -13,13 +13,17 @@
                             <img src="<?=ROOT_URL?>content/images/photo-album.gif" alt="Title photo">
                         </a>
                         <div class="caption">
-                            <h4><?= htmlspecialchars($album['name']) ?></h4>
+                            <h4><?php echo htmlspecialchars($album['name']) ?></h4>
                             <form action="<?php echo ROOT_URL . 'album/delete/' . htmlspecialchars($album['id']);?>"
                                 method="post" class="text-right">
+                                <a href="<?php echo ROOT_URL . 'album/edit/' . htmlspecialchars($album['id']);?>"
+                                    class="btn btn-link text-success">
+                                    <span class="text-success">Edit</span>
+                                </a>
                                 <a href="#confirm" class="btn btn-link delete-album text-danger" data-toggle="modal">
                                     <span class="text-danger">Delete</span>
                                 </a>
-                                <input type="hidden" name="form_token" value="<?=$_SESSION['form_token']?>" />
+                                <input type="hidden" name="form_token" value="<?php echo $_SESSION['form_token']?>" />
                             </form>
                         </div>
                     </div>

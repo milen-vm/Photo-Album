@@ -66,6 +66,34 @@ abstract class BaseModel {
         return false;
     }
 
+    public function update($query_params, $bind_params) {
+        $types = $this->generateTypesString($bind_params);
+        array_unshift($bind_params, $types);
+        
+        $query = 'UPDATE ' . $this->table . ' SET ' . $query_params['set'] .
+            ' WHERE ' . $query_params['where'];
+
+        if ($stmt = $this->db->prepare($query)) {
+            call_user_func_array(array($stmt, 'bind_param'),
+                $this->makeValuesReferenced($bind_params));
+            if ($stmt->execute()) {
+                return $stmt->affected_rows;
+            }
+            
+            if (DEBUG_MODE) {
+                printf("1 Error message: %s\n", $stmt->error);
+            }
+
+            return null;
+        }
+        
+        if (DEBUG_MODE) {
+                printf("Error message: %s\n", $this->db->error);
+        }
+
+        return null;
+    }
+
     public function find($query_params = array(), $bind_params = array()) {
         $query_params = array_merge( array(
             'table' => $this->table,
