@@ -9,7 +9,7 @@
     padding: 0px 15px 0px;
 }
 
-.bs-example{
+.bs-example {
     margin-top: 20px;
 }
 
@@ -18,7 +18,7 @@
     overflow: hidden;
 }
 
-.album-list img{
+.album-list img {
     /*height: 100%;*/
     /*width: 100%;*/
 }
@@ -27,10 +27,17 @@
     width: 400px;
 }
 
-.img-responsive, .thumbnail > img,
-.thumbnail a > img, .carousel-inner > .item > img,
+.img-responsive,
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
     display: block;
     max-height: 200px;
     width: auto;
+}
+
+.thumbnail img {
+    min-height: 100%;
+    /*height: 140px;*/
 }
