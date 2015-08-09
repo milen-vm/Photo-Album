@@ -2,75 +2,43 @@
 
 class Account {
     private $email;
-    private $full_name;
-    private $birth_date;
+    private $fullName;
+    private $birthDate;
     private $password;
-    private $confirm_password;
     private $errors = array();
     
-    public function __construct($email, $full_name, $birth_date, $password, $confirm_password) {
-        $this->email = $email;
-        $this->full_name = $full_name;
-        $this->birth_date = $birth_date;
-        $this->password = $password;
-        $this->confirm_password = $confirm_password;
+    public function __construct($email, $fullName, $birthDate, $password, $confirmedPassword) {
+        $this->setEmail($email);
+        $this->setFullName($fullName);
+        $this->setBirthDate($birthDate);
+        $this->setPassword($password, $confirmedPassword);
     }
     
     public function getEmail() {
         return $this->email;
     }
     
-    public function getFullName() {
-        return $this->full_name;
-    }
-    
-    public function getBirthDate() {
-        if (empty($this->birth_date)) {
-            return null;
-        }
-        
-        return $this->birth_date;
-    }
-    
-    public function getPassword() {
-        return $this->password;
-    }
-    
-    public function getPasswordHash() {
-        $options = array('cost' => PASSWORD_CRYPT_COST);
-        return password_hash($this->password, PASSWORD_DEFAULT, $options);
-    }
-    
-    public function getErrors() {
-        return $this->errors;
-    }
-        
-    public function isValid() {
-        $this->validateEmail();
-        $this->validateFullName();
-        $this->validateBirthDate();
-        $this->validatePassword();
-        
-        return count($this->errors) === 0;
-    }
-    
-    private function validateEmail() {
-        if (empty($this->email)) {
+    public function setEmail($email) {
+        if (empty($email)) {
             $this->errors[] = 'Email is required.';
+        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $this->errors[] = 'Invalid email format.';
         } else {
-            if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-                $this->errors[] = 'Invalid email format.';
-            }
+            $this->email = $email;
         }
     }
     
-    private function validateFullName() {
-        if (empty($this->full_name)) {
-            $this->errors[] = 'First name is required.';
+    public function getFullName() {
+        return $this->fullName;
+    }
+    
+    public function setFullName($fullName) {
+        if (empty($fullName)) {
+            $this->errors[] = 'Full name is required.';
             return;
         }
         
-        $length = mb_strlen($this->full_name, 'UTF-8');
+        $length = mb_strlen($fullName, 'UTF-8');
         if ($length < FULL_NAME_MIN_LENGTH) {
             $this->errors[] = 'Full name min lenth is ' .
                 FULL_NAME_MIN_LENGTH . ' chars.';
@@ -84,71 +52,89 @@ class Account {
             return;
         }
         
-        // if (!preg_match('/^[A-Za-z-\s+]+$/', $this->full_name)) {
+        $this->fullName = $fullName;
+        
+        // if (!preg_match('/^[A-Za-z-\s+]+$/', $this->fullName)) {
             // $this->errors[] = 'Full name can contains only ' .
                 // "latin leters and '-'.";
         // }
     }
     
-    private function validateBirthDate() {
-        if (empty($this->birth_date) || $this->birth_date === null) {
+    public function getBirthDate() {
+        if (empty($this->birthDate)) {
+            return null;
+        }
+        
+        return $this->birthDate;
+    }
+    
+    public function setBirthDate($birthDate) {
+        if (empty($birthDate) || $birthDate === null) {
             return;
         }
         
-        $date = preg_replace('/\s+/', '', $this->birth_date);
-        $date_array  = explode('-', $date);
-        if (count($date_array) === 3) {
-            $date_array = array_map('intval', $date_array);
+        $date = preg_replace('/\s+/', '', $birthDate);
+        $dateArray  = explode('-', $date);
+
+        if (count($dateArray) === 3) {
+            $dateArray = array_map('intval', $dateArray);
             // bool checkdate ( int $month , int $day , int $year )
-            if (checkdate($date_array[1], $date_array[2], $date_array[0])) {
-                if ($date_array[0] < MIN_BIRTH_YEAR) {
+            if (checkdate($dateArray[1], $dateArray[2], $dateArray[0])) {
+                if ($dateArray[0] < MIN_BIRTH_YEAR) {
                     $this->errors[] = 'Invalid birth year.';
+                    return;
                 }
             } else {
                 $this->errors[] = 'Invalid birth date.';
+                return;
             }
         } else {
             $this->errors[] = 'Invalid date format.';
+            return;
         }
+        
+        $this->birthDate = $birthDate;
     }
     
-    private function validatePassword() {
-        if (empty($this->password)) {
+    public function getPassword() {
+        return $this->password;
+    }
+    
+    public function setPassword($password, $confirmedPassword) {
+         if (empty($password)) {
             $this->errors[] = 'Password is required.';
             return;
         }
         
-        if (preg_match('/\s+/', $this->password)) {
+        if (preg_match('/\s+/', $password)) {
             $this->errors[] = 'Passwort cannot contains white spaces.';
             return;
         }
         
-        if (strlen($this->password) < PASSWORD_MIN_LENGTH) {
+        if (strlen($password) < PASSWORD_MIN_LENGTH) {
             $this->errors[] = 'Password min length is ' .
                 PASSWORD_MIN_LENGTH . ' symbols.';
             return;
         }
         
-        if ($this->password != $this->confirm_password) {
+        if ($password != $confirmedPassword) {
             $this->errors[] = 'Confirm password do not match.';
+            return;
         }
+        
+        $this->password = $password;
     }
-    // Not in use
-    private function validateUsername() {
-        if (empty($this->user_name)) {
-            $this->errors[] = 'Username is required.';
-            return;
-        }
-        
-        if (strlen($this->user_name) < USER_NAME_MIN_LENGTH) {
-            $this->errors[] = 'Min username length is ' .
-                USER_NAME_MIN_LENGTH .' chars.';
-            return;
-        }
-        
-        if (!preg_match('/^[A-Za-z0-9-_]+$/', $this->user_name)) {
-            $this->errors[] = 'Username can contains only latin ' .
-                "leters, digits, '-' and '_'.";
-        }
+    
+    public function getPasswordHash() {
+        $options = array('cost' => PASSWORD_CRYPT_COST);
+        return password_hash($this->password, PASSWORD_DEFAULT, $options);
+    }
+    
+    public function getErrors() {
+        return $this->errors;
+    }
+    
+    public function isValid() {
+        return count($this->errors) === 0;
     }
 }
